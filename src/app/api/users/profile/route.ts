@@ -1,7 +1,7 @@
 import { connect } from "@/dbConfig/dbConfig";
-import User from "@/models/userModel"
+import User from "@/models/userModel";
+import Profile from "@/models/profileModel"
 import { NextRequest, NextResponse } from "next/server";
-import bcryptjs from "bcryptjs"
 
 
 connect();
@@ -10,7 +10,7 @@ connect();
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json()
-        const {username, email, password, registrationNumber, employeeNumber} = reqBody
+        const {email, image, registrationNumber, employeeNumber, yearOfStudy} = reqBody
 
         console.log(reqBody)
 
@@ -20,22 +20,17 @@ export async function POST(request: NextRequest) {
         if(!user){
             return NextResponse.json({error: "User doesn't exist"}, {status: 400})
         }
-
-        //hashing the password
-        const salt = await bcryptjs.genSalt(10);
-        const hashedPassword = await bcryptjs.hash(password, salt);
+        
 
 
-        const newUser = new User({
-            username,
-            email,
-            password: hashedPassword,
+        const newProfile = new Profile({
+            Image,
             role: String,
             registrationNumber: user.role === "STUDENT" ? registrationNumber : undefined,
             employeeNumber: user.role === "ADMIN" ? employeeNumber : undefined,
         })
 
-        const savedUser = await newUser.save()
+        const savedUser = await newProfile.save()
         console.log(savedUser)
 
         return NextResponse.json({
@@ -47,4 +42,8 @@ export async function POST(request: NextRequest) {
     } catch (error: any) {
         return NextResponse.json({error: error.message}, {status: 500})
     }
+}
+
+function UserProfile() {
+    throw new Error("Function not implemented.");
 }

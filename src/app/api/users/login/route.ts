@@ -33,10 +33,20 @@ export async function POST(request: NextRequest) {
             id: user._id,
             username: user.username,
             email: user.email,
+            role: user.role,
         }
 
         //create token
         const token = jwt.sign(tokenData, process.env.JTW_TOKEN_SECRET!, { expiresIn: "1d" })
+
+        // const roleCheck = jwt({ token, user }) {
+        //     if(user) token.role = user.role;
+        //     return token;
+        //   },
+        // async session({ session, token }) {
+        //     if (session?.user) session.user.role = token.role;
+        //     return session;
+        //   },
 
         const response = NextResponse.json({
             message: "Login successfully",
@@ -48,4 +58,8 @@ export async function POST(request: NextRequest) {
     }catch(error: any){
         return NextResponse.json({error: error.message}, {status: 500})
     }
+}
+
+function session(arg0: { session: any; token: string; }) {
+    throw new Error("Function not implemented.");
 }

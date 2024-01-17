@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@syncfusion/ej2-react-calendars": "^24.1.44",
     "axios": "^1.6.5",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
@@ -17,7 +18,8 @@
     "nodemailer": "^6.9.8",
     "react": "^18",
     "react-dom": "^18",
-    "react-hot-toast": "^2.4.1"
+    "react-hot-toast": "^2.4.1",
+    "react-icon": "^1.0.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
