@@ -16,23 +16,25 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-stone-200">
       <main className="w-full relative flex flex-col mx-auto overflow-x-hidden justify-center">
         <nav className="flex justify-around items-center mx-auto p-4 w-[100%] bg-white">
-          <header className="text-lg font-bold font-poppins">CTMS</header>
-          <div className="flex justify-around"><Link
-            href="/login"
-            className="w-[200px] rounded-full p-2 flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 hover:bg-blue-600 hover:text-white"
-          >
-            Login <HiOutlineArrowLongRight className="ml-2" />
-          </Link>
-          <Link
-            href="/signup"
-            className="w-[200px] rounded-full p-2 flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 hover:bg-blue-600 hover:text-white"
-          >
-            Register <HiOutlineArrowLongRight className="ml-2" />
-          </Link></div>
+          <header className="text-lg font-bold text-black font-poppins">CTMS</header>
+          <div className="flex justify-between w-[40%]">
+            <Link
+              href="/login"
+              className="w-[200px] rounded-full p-2 text-black flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 hover:bg-blue-600 hover:text-white"
+            >
+              Login
+            </Link>
+            <Link
+              href="/signup"
+              className="w-[200px] rounded-full p-2 flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 bg-blue-600 text-white hover:bg-white hover:text-black"
+            >
+              Register 
+            </Link>
+          </div>
         </nav>
         <section className="mt-7 py-8 flex place-items-center items-center w-[90vw] mx-auto justify-center">
           <div className="w-[40%] flex flex-col mx-auto">
-            <h1 className="font-bold text-5xl mb-3 font-poppins">
+            <h1 className="font-bold text-stone-800 text-5xl mb-3 font-poppins">
               Welcome to CTMS
             </h1>
             <span className="text-base text-stone-700 leading-9">
@@ -62,7 +64,7 @@ export default function Home() {
                   </p>
                 </div>
                 <Link
-                  href="/Profile"
+                  href="/Admin"
                   className="w-[90%] rounded-full p-2 flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 hover:bg-blue-600 hover:text-white"
                 >
                   Take A Look <HiOutlineArrowLongRight className="ml-2" />
@@ -83,7 +85,7 @@ export default function Home() {
                   </p>
                 </div>
                 <Link
-                  href="/Moderator"
+                  href="/Admin"
                   className="w-[90%] rounded-full p-2  flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 hover:bg-blue-600 hover:text-white"
                 >
                   Get Verified <HiOutlineArrowLongRight className="ml-2" />

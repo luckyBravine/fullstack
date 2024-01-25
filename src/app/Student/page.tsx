@@ -6,7 +6,7 @@ import dr_Njeri from "../../../public/dr_Njeri.jpg";
 import { BsSearch, BsFileEarmarkText } from "react-icons/bs";
 import { IoMdNotificationsOutline, IoMdHome } from "react-icons/io";
 import { AiOutlinePrinter } from "react-icons/ai";
-import Select from "react-select";
+// import Select from "react-select";
 import Notification from "./Components/Notification/Notification"
 import Link from "next/link";
 const table = [
@@ -248,64 +248,66 @@ const Student = () => {
   // 
 
   return (
-    <main className="flex flex-col justify-center place-items-center items-center mx-auto w-full">
-      <nav className="p-5 flex justify-between place-items-center items-center mx-auto relative  w-[100vw] shadow-lg">
+    <main className="flex flex-col justify-center place-items-center items-center mx-auto w-full overflow-hidden">
+      <nav className="py-6 flex justify-between place-items-center items-center mx-auto relative  w-[100vw] shadow-lg">
         <div className="flex items-center w-[80%] mx-auto justify-around">
         <Link
-            className="bg-[#e0f7fa] p-1 rounded-full flex justify-center items-center"
+            className="bg-[#313131] p-1 rounded-full flex justify-center items-center"
             href="/"
           >
-            <IoMdHome className="relative w-6 h-6 ml-3 mr-1 text-slate-800" />
-            <span className=" mr-1 text-base text-slate-500">Home</span>
+            <div className="flex items-center">
+            <IoMdHome className="relative w-5 h-5 ml-2 mr-1 text-slate-300" />
+            <span className=" text-base text-slate-300">Home</span>
+            </div>
           </Link>
-          <div className="flex bg-[#e0f7fa] items-center rounded-full">
-            <BsSearch className="w-4 ml-3 mr-1 h-4 text-slate-800" />
+          <div className="flex bg-[#313131]  items-center rounded-full">
+            <BsSearch className="w-4 ml-3 mr-1 h-4 text-slate-300" />
             <input
               type="text"
               placeholder="Search Classes here"
-              className="p-2 bg-transparent outline-none w-[80%] rounded-r-full"
+              className="p-1 bg-transparent outline-none w-[80%] rounded-r-full"
             />
           </div>
           <div>
-            <button className="bg-[#e0f7fa] p-1 rounded-full w-7 h-7 flex justify-center items-center relative" onClick={() => setShow(!show)} >
-              <IoMdNotificationsOutline className="relative w-6 h-6 text-slate-800" />
+            <button className="bg-[#313131]  p-1 rounded-full w-7 h-7 flex justify-center items-center relative" onClick={() => setShow(!show)} >
+              <IoMdNotificationsOutline className="relative w-6 h-6 text-slate-300" />
               {show ? <div className="absolute bg-green-400 w-3 h-3 rounded-full top-[-3px] ml-4"></div> : null}
               
             </button>
             { show ? null : <Notification /> }
           </div>
-          <Select
+          {/* <Select
             options={searchOptions}
             className="rounded-full "
             placeholder="School of"
             onChange={handleChange}
             styles={customStyles}
-          />
+          /> */}
           <div>
-            <button className="bg-[#e0f7fa] p-1 rounded-full flex justify-center items-center">
-              <AiOutlinePrinter className="relative w-6 h-6 ml-3 mr-1 text-slate-800" />
-              <span className=" mr-1 text-base text-slate-500">
+            <button className="bg-[#313131] p-1 rounded-full flex justify-center items-center">
+              <AiOutlinePrinter className="relative w-6 h-6 ml-3 mr-1 text-slate-300" />
+              <span className=" mr-1 text-base text-slate-300">
                 Generate Report
               </span>
             </button>
           </div>
           <div>
-            <button className="bg-[#e0f7fa] p-1 rounded-full flex justify-center items-center">
-              <BsFileEarmarkText className="relative text-lg ml-3 mr-1 text-slate-800" />
-              <span className=" mr-1 text-base text-slate-500">
+            <button className="bg-[#313131] p-1 rounded-full flex justify-center items-center">
+              <BsFileEarmarkText className="relative text-lg ml-3 mr-1 text-slate-300" />
+              <span className=" mr-1 text-base text-slate-300">
                 SC211/1088/2019
               </span>
             </button>
           </div>
         </div>
       </nav>
-      <section className="grid my-6 items-center place-items-center justify-center overflow-x-hidden mx-auto w-[100vw] grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+      <section className="grid my-6 gap-x-0 items-center place-items-center justify-center overflow-x-hidden mx-auto w-full grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
         {table.map((item, index) => (
           <div
             key={index}
-            className="flex flex-col justify-center mx-auto place-items-center items-center bg-indigo-400 rounded-lg w-[300px]"
+            className="flex flex-col justify-center mx-auto place-items-center items-center bg-stone-800 rounded-lg w-[80%]"
           >
-            <div className="bg-indigo-500 flex justify-between mx-auto w-full p-3 rounded-t-lg"> 
+            <div className="bg-stone-700 flex justify-between mx-auto w-full p-3 rounded-t-lg"> 
               <h3 className="font-semibold text-lg ">
                 {item[currentTimeOfDay].date_name}
               </h3>
@@ -354,7 +356,7 @@ const Student = () => {
                 <div
                   key={time}
                   onClick={() => handleItemClick(index, time)}
-                  className={`bg-indigo-800 w-3 h-3 rounded-full mx-1 cursor-pointer ${
+                  className={`bg-slate-100 w-3 h-3 rounded-full mx-1 cursor-pointer ${
                     currentTimeOfDay === time ? "opacity-100" : "opacity-50"
                   }`}
                 ></div>

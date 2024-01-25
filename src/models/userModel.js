@@ -19,13 +19,11 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    role: {
-        type: String,
-        default: "STUDENT", 
-        enum: ["ADMIN", "STUDENT"],
-    },
-    registrationNumber: String,
-    employeeNumber: String,
+    // role: {
+    //     type: String,
+    //     default: "STUDENT", 
+    //     enum: ["ADMIN", "STUDENT"],
+    // },
     forgotPasswordToken: String,
     forgotPasswordTokenExpiry: Date,
     verifyToken: String,

@@ -1,150 +1,25 @@
-// "use client";
-// import axios from "axios";
-// import Link from "next/link";
-// import { useRouter } from "next/navigation";
-// import { useState } from "react";
-// import toast from "react-hot-toast";
-
-// export default function Profile() {
-//   const router = useRouter();
-//   const [data, setData] = useState("empty");
-//   const logout = async () => {
-//     try {
-//       await axios.post("/api/users/logout");
-//       toast.success("Logout successfull");
-//       router.push("/login");
-//     } catch (error: any) {
-//       console.log(error.message);
-//       toast.error(error.message);
-//     }
-//   };
-//   const getUserDetails = async () => {
-    
-//     try{
-//         const res = await axios.get("/api/users/me");
-//         console.log(res.data);
-//         setData(res.data.data._id); 
-//     }catch (error: any) {
-//         console.log(error.message);
-//         toast.error(error.message);
-//       }
-//   };
-//   return (
-//     <div className="min-h-screen flex flex-col items-center justify-between">
-//       <h1>Profile</h1>
-//       <hr />
-//       <h1>Profile page</h1>
-//       <hr />
-//       <h2 className="p-1 bg-green-500">
-//         {data === "empty" ? "Empty" : <Link href={`/profile/${data}`}>{data}</Link>}
-//       </h2>
-//       <button
-//         onClick={logout}
-//         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-//       >
-//         LogOut
-//       </button>
-//       <button
-//         onClick={getUserDetails}
-//         className="bg-green-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-//       >
-//         Get User Details
-//       </button>
-//     </div>
-//   );
-// }
-
-// // function useState(arg0: string): [any, any] {
-// //   throw new Error("Function not implemented.");
-// // }
-
 "use client";
-// import Link from "next/link";
-// import { useRouter } from "next/navigation";
-// import  axios  from "axios";
-// import { useEffect, useState } from "react";
-// import toast from "react-hot-toast";
-
-// export default function SignupPage() {
-
-//   const router = useRouter();
-
-//   const [user, setUser] = useState({
-//     email: "",
-//     password: "",
-//     username: "",
-//   });
-
-//   const [buttonDisabled, setButtonDisabled] = useState(false)
-
-//   const [loading, setLoading] = useState(false)
-
-//  const onSignUp = async () => {
-//   try{
-//     setLoading(true);
-//     const response = await axios.post('/api/users/signup', user);
-
-//     console.log("signup successfull", response.data)
-//     router.push("/login")
-//   }catch(error: any){
-//     console.log("SignUp was successfull", error.message )
-//     toast.error(error.message)
-//   }finally{
-//     setLoading(false)
-//   }
-//  };
-
-//   useEffect(() => {
-//     if(user.email.length > 0 && user.password.length > 0 && user.username.length > 0){
-//       setButtonDisabled(false)
-//     }else{
-//       setButtonDisabled(true)
-//     }
-//   }), [user]
-//   return (
-//     <div className="min-h-screen flex flex-col items-center justify-between">
-//       <h1>{loading ? "Processing" : "SignUp"}</h1>
-//       <hr />
-
-//       <label htmlFor="username">Username</label>
-//       <input
-//         className="text-black outline-none border-none px-1 py-2 rounded-lg mb-2"
-//         type="text"
-//         value={user.username}
-//         onChange={(e) => setUser({ ...user, username: e.target.value })}
-//         placeholder="username"
-//       />
-//       <label htmlFor="username">Email</label>
-//       <input
-//         className="text-black outline-none border-none px-1 py-2 rounded-lg mb-2"
-//         type="text"
-//         value={user.email}
-//         onChange={(e) => setUser({ ...user, email: e.target.value })}
-//         placeholder="email"
-//       />
-//       <label htmlFor="username">Password</label>
-//       <input
-//         className="text-black outline-none border-none px-1 py-2 rounded-lg mb-2"
-//         type="password"
-//         value={user.password}
-//         onChange={(e) => setUser({ ...user, password: e.target.value })}
-//       />
-
-//       <button
-//         onClick={onSignUp}
-//         className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
-//       >
-//         {buttonDisabled ? "No SignUp" : "SignUp"}
-//       </button>
-//       <Link href='/login'>Already have an Account</Link>
-//     </div>
-//   );
-// }
+import profile from '../../public/profile.png'
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Image from "next/image";
+import './profile.css'
+
+function convertToBase64(file: any){
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result)
+    };
+    fileReader.onerror = (error) => {
+      reject(error)
+    }
+  })
+}
 
 export default function SignupPage() {
   const router = useRouter();
@@ -159,6 +34,7 @@ export default function SignupPage() {
 
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [postImage, setPostImage] = useState( { myFile : ""})
 
   const onSignUp = async () => {
     try {
@@ -172,14 +48,14 @@ export default function SignupPage() {
 
       // Redirect based on user's role
       if (role === "ADMIN") {
-        router.push("/Moderator"); // Update with your admin page path
+        router.push("/Admin");
       } else if (role === "STUDENT") {
-        router.push("/Student"); // Update with your student page path
+        router.push("/Student");
       } else {
         router.push("/login");
       }
     } catch (error: any) {
-      console.log("Signup was unsuccessful", error.message);
+      console.log("Profile was not created", error.message);
       toast.error(error.message); 
     } finally {
       setLoading(false);
@@ -207,23 +83,35 @@ export default function SignupPage() {
       <h1>{loading ? "Processing" : "Set Your Profile"}</h1>
       <hr />
 
-      <label htmlFor="username">User Image</label>
+      {/* <label htmlFor="username">User Image</label>
       <input
-        className="text-black outline-none border-none px-1 py-2 rounded-lg mb-2"
+        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-white"
         type="file"
         value={profile.image}
         onChange={(e) => setProfile({ ...profile, image: e.target.value })}
         placeholder="username"
-      />
-      <label htmlFor="username">Email</label>
+      /> */}
+      <label htmlFor="file-upload" className='custom-file-upload'>
+          <img src={postImage.myFile || profile} alt="" />
+      </label>
+
+        <input 
+          type="file"
+          name="myFile"
+          id='file-upload'
+          accept='.jpeg, .png, .jpg'
+          onChange={(e) => setProfile({ ...profile, image: e.target.value })}
+          className="input"
+         />
+      <label htmlFor="username">Your Of Study</label>
       <input
-        className="text-black outline-none border-none px-1 py-2 rounded-lg mb-2"
-        type="text"
+        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+        type="number"
         value={profile.yearOfStudy}
         onChange={(e) => setProfile({ ...profile, yearOfStudy: e.target.value })}
-        placeholder="email"
+        placeholder="Year Of Study"
       />
-      <div className="flex">
+      <div className="flex-col">
         <label>Role:</label>
         <div>
           <input
@@ -253,7 +141,7 @@ export default function SignupPage() {
             {profile.role === "ADMIN" ? "Employee Number" : "Registration Number"}
           </label>
           <input
-            className="text-black outline-none border-none px-1 py-2 rounded-lg mb-2"
+            className="p-2 border flex-col border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
             type="text"
             value={profile.registrationNumber}
             onChange={(e) => setProfile({ ...profile, registrationNumber: e.target.value })}
@@ -275,3 +163,7 @@ export default function SignupPage() {
     </div>
   );
 }
+function createPost(postImage: { myFile: string; }) {
+  throw new Error('Function not implemented.');
+}
+

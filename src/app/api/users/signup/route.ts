@@ -1,7 +1,7 @@
-import { connect } from "@/dbConfig/dbConfig";
 import User from "@/models/userModel"
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs"
+import { connect } from "@/dbConfig/dbConfig";
 
 
 connect();
@@ -10,14 +10,14 @@ connect();
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json()
-        const {username, email, password, registrationNumber, employeeNumber} = reqBody
+        const {username, email, password} = reqBody
 
         console.log(reqBody)
 
         //check if user exists
         const user = await User.findOne({email})
 
-        if(!user){
+        if(user){
             return NextResponse.json({error: "User doesn't exist"}, {status: 400})
         }
 
@@ -30,9 +30,6 @@ export async function POST(request: NextRequest) {
             username,
             email,
             password: hashedPassword,
-            role: String,
-            registrationNumber: user.role === "STUDENT" ? registrationNumber : undefined,
-            employeeNumber: user.role === "ADMIN" ? employeeNumber : undefined,
         })
 
         const savedUser = await newUser.save()
