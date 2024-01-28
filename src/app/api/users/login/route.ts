@@ -36,6 +36,8 @@ export async function POST(request: NextRequest) {
             role: user.role,
         }
 
+        console.log(tokenData)
+
         //create token
         const token = jwt.sign(tokenData, process.env.JTW_TOKEN_SECRET!, { expiresIn: "1d" })
 
@@ -51,6 +53,7 @@ export async function POST(request: NextRequest) {
         const response = NextResponse.json({
             message: "Login successfully",
             success: true,
+            role: user.role,
         })
 
         response.cookies.set("token", token, {httpOnly: true})

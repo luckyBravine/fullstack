@@ -18,9 +18,20 @@ export default function LoginPage() {
     try {
       setLoading(true);
       const response = await axios.post("/api/users/login", user);
-      console.log("Login success", response.data);
-      toast.success("Login success");
-      router.push("/profile");
+      console.log("API Response:", response.data);
+      const role = response.data.role;
+      console.log("Login success", response.data.role)
+      
+      if (role === "ADMIN") {
+        router.push("/Admin");
+        toast.success("Welcome, Admin Login success");
+      } else if (role === "STUDENT") {
+        router.push("/Student");
+        toast.success("Welcome, Student Login success");
+      } else {
+        router.push("/login");
+        toast.success("Sorry, Login Failed");
+      }
     } catch (error: any) {
       console.log("Login failed", error.message);
       toast.error(error.message);

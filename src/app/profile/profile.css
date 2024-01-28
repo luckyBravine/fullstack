@@ -12,7 +12,7 @@ input[type="file"] {
   cursor: pointer;
 }
 
-.custom-file-upload > img {
+.custom-file-upload > Image {
   width: 50px;
   height: 50px;
 }

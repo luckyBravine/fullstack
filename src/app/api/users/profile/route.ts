@@ -10,27 +10,26 @@ connect();
 export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json()
-        const {email, image, registrationNumber, employeeNumber, yearOfStudy} = reqBody
+        const {image, registrationNumber, course, yearOfStudy} = reqBody
 
         console.log(reqBody)
 
         //check if user exists
-        const user = await User.findOne({email})
+        // const user = await User.findOne({email})
 
-        if(user){
-            return NextResponse.json({error: "User doesn't exist"}, {status: 400})
-        }
+        // if(user){
+        //     return NextResponse.json({error: "User doesn't exist"}, {status: 400})
+        // }
 
-        const { myFile } = reqBody;
-        const base64Image = myFile.split(',')[1]; 
+        const base64Image = image.split(',')[1]; 
 
         const newProfile = new Profile({
             role: String, // You might want to replace this with an actual role value
-            registrationNumber: user.role === "STUDENT" ? registrationNumber : undefined,
-            employeeNumber: user.role === "ADMIN" ? employeeNumber : undefined,
-            image: base64Image, // Save the base64 representation of the image
+            registrationNumber,
+            course,
+            base64Image, 
             yearOfStudy,
-        })
+        }
 
         const savedUser = await newProfile.save()
         console.log(savedUser)

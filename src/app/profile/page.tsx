@@ -1,5 +1,5 @@
 "use client";
-import profile from '../../public/profile.png'
+import avatar from '../../../public/avatar.png'
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import './profile.css'
+
+const url = "http://localhost:3000/profile"
 
 function convertToBase64(file: any){
   return new Promise((resolve, reject) => {
@@ -21,15 +23,14 @@ function convertToBase64(file: any){
   })
 }
 
-export default function SignupPage() {
+export default function ProfilePage() {
   const router = useRouter();
 
   const [profile, setProfile] = useState({
     image: "",
     yearOfStudy: "",
-    role: "",
+    course: "",
     registrationNumber: "", 
-    employeeNumber: "",
   });
 
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -62,15 +63,16 @@ export default function SignupPage() {
     }
   };
 
-  const handleRoleChange = (selectedRole: string) => {
-    setProfile({ ...profile, role: selectedRole, registrationNumber: "" });
-  };
+  // const handleRoleChange = (selectedRole: string) => {
+  //   setProfile({ ...profile, role: selectedRole, registrationNumber: "" });
+  // };
 
   useEffect(() => {
     if (
       profile.yearOfStudy.length > 0 &&
-      profile.role &&
-      (profile.registrationNumber.length > 0 || profile.role === "STUDENT") // Check if registration number is provided for students
+      profile.image.length > 0 &&
+      profile.course.length > 0 &&
+      profile.registrationNumber.length > 0
     ) {
       setButtonDisabled(false);
     } else {
@@ -92,7 +94,8 @@ export default function SignupPage() {
         placeholder="username"
       /> */}
       <label htmlFor="file-upload" className='custom-file-upload'>
-          <img src={postImage.myFile || profile} alt="" />
+          {/* <img src={profile.image || profile} alt="" /> */}
+          <Image src={profile.image || avatar} alt="Profile Image" width={50} height={50} className="w-[50px] h-[50px]"/>
       </label>
 
         <input 
@@ -111,7 +114,23 @@ export default function SignupPage() {
         onChange={(e) => setProfile({ ...profile, yearOfStudy: e.target.value })}
         placeholder="Year Of Study"
       />
-      <div className="flex-col">
+       <label htmlFor="username">Your Course</label>
+      <input
+        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+        type="text"
+        value={profile.course}
+        onChange={(e) => setProfile({ ...profile, course: e.target.value })}
+        placeholder="Year Of Study"
+      />
+        <label htmlFor="username">Registration Number</label>
+      <input
+        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+        type="text"
+        value={profile.registrationNumber}
+        onChange={(e) => setProfile({ ...profile,registrationNumber: e.target.value })}
+        placeholder="Year Of Study"
+      />
+      {/* <div className="flex-col">
         <label>Role:</label>
         <div>
           <input
@@ -150,7 +169,14 @@ export default function SignupPage() {
             }
           />
         </div>
-      )}
+      )} */}
+      {/* <label>
+          Role:
+          <select value={profile.role}  onChange={(e) => setProfile({ ...profile, role: e.target.value })}>
+            <option value="STUDENT">Student</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </label> */}
 
       <button
         onClick={onSignUp}

@@ -4,21 +4,21 @@ import jwt from 'jsonwebtoken';
  
 
 export function middleware(request: NextRequest) {
-  const path = request.nextUrl.pathname
+  // const path = request.nextUrl.pathname
 
-  const isPublicPath = path === '/login' || path === '/signup' || path === '/'
+  // const isPublicPath = path === '/login' || path === '/signup' || path === '/'
 
-  const token = request.cookies.get("token")?.value || "";
+  // const token = request.cookies.get("token")?.value || "";
 
-  if(isPublicPath && token){
-    return NextResponse.redirect(new URL('/login', request.nextUrl))
-    console.log("hello")
-  } 
+  // if(isPublicPath && token){
+  //   return NextResponse.redirect(new URL('/', request.nextUrl))
+  //   console.log("hello")
+  // } 
   
-  if(!isPublicPath && !token){
-    return NextResponse.redirect(new URL('/', request.nextUrl))
-    console.log("hello 1")
-  } 
+  // if(!isPublicPath && !token){
+  //   return NextResponse.redirect(new URL('/', request.nextUrl))
+  //   console.log("hello 1")
+  // } 
   // try {
   //   console.log("welcome")
   //   const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET!) as { role: string };
