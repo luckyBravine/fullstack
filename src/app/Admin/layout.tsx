@@ -24,6 +24,7 @@ import Grid from "@mui/material/Grid";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 const drawerWidth: number = 240;
@@ -92,8 +93,8 @@ export default function AdminLayout({
   };
 
   return (
-    <div>
-      <body className={`inter.className flex mx-auto w-full`}>
+    <>
+      <body className={`inter.className flex mx-auto w-full bg-white`}>
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <AppBar position="absolute" open={open}>
@@ -167,6 +168,6 @@ export default function AdminLayout({
         </Box>
         {children}
       </body>
-    </div>
+    </>
   );
 }

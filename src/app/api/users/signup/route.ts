@@ -4,7 +4,7 @@ import bcryptjs from "bcryptjs";
 import { connect } from "@/dbConfig/dbConfig";
 
 connect();
-// let savedUser;
+let savedUser: any;
 
 export async function POST(request: NextRequest) {
   try {
@@ -73,8 +73,35 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest){
   try {
     const users = await User.find();
-    return NextResponse.json({ users, savedUser });
+    const rows = Array.isArray(users) ? users.map(user => user.toObject()) : [];
+    return NextResponse.json(rows);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const id = request.nextUrl.searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "User ID is required for deletion" },
+        { status: 400 }
+      );
+    }
+
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return NextResponse.json(
+        { error: "User not found for deletion" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ message: "User deleted" }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error }, { status: 500 });
   }
 }
