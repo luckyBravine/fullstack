@@ -1,13 +1,3 @@
-// import LecturerList from "./components/LecturerList";
-// import Navbar from "./components/Navbar";
-
-// export default function Lecturers() {
-//   return (<div className="flex flex-col w-full mx-auto">
-//     <Navbar />
-//     <LecturerList />
-//     </div>);
-// }
-
 "use client";
 import React, { useEffect, useState } from "react";   
 import Box from "@mui/material/Box";
@@ -40,6 +30,7 @@ import axios from "axios";
 import Header from "../Header/page";
 import Footer from "../Footer/page";
 import { TextField } from "@mui/material";
+import toast from "react-hot-toast";
 
 const roles = ["Lesson", "HOD", "Development"];
 const randomRole = () => {
@@ -47,40 +38,37 @@ const randomRole = () => {
 };
 
 const API_URL = "/api/users/lecturer";
+const getUsers = async () => {
+  try {
+    const response = await axios.get("/api/users/lecturer");
+    toast.success('User exists');
+
+    // Assuming response.data is an array of users
+    const transformedUsers = Array.isArray(response.data)
+      ? response.data.map(lecturer => ({
+          id: lecturer._id,
+          firstname: lecturer.firstname,
+          lastname: lecturer.lastname,
+          email: lecturer.email,
+          password: lecturer.password,
+          employeeNumber: lecturer.employeeNumber,
+        }))
+      : [];
+      console.log(transformedUsers )
+    return transformedUsers;
+    
+  } catch (error: any) {
+    console.error("Failed to fetch users", error.message);
+    toast.error(error.message);
+    return [];
+  }
+};
 
 const initialRows: GridRowsProp = [
   // {
   //   id: _id,
   //   name: randomTraderName(),
   //   age: 25,
-  //   joinDate: randomCreatedDate(),
-  //   role: randomRole(),
-  // },
-  // {
-  //   id: randomId(),
-  //   name: randomTraderName(),
-  //   age: 36,
-  //   joinDate: randomCreatedDate(),
-  //   role: randomRole(),
-  // },
-  // {
-  //   id: randomId(),
-  //   name: randomTraderName(),
-  //   age: 19,
-  //   joinDate: randomCreatedDate(),
-  //   role: randomRole(),
-  // },
-  // {
-  //   id: randomId(),
-  //   name: randomTraderName(),
-  //   age: 28,
-  //   joinDate: randomCreatedDate(),
-  //   role: randomRole(),
-  // },
-  // {
-  //   id: randomId(),
-  //   name: randomTraderName(),
-  //   age: 23,
   //   joinDate: randomCreatedDate(),
   //   role: randomRole(),
   // },
@@ -114,25 +102,26 @@ function EditToolbar(props: EditToolbarProps) {
     try {
       // Validate your form data if needed
 
-      const response = await axios.post(API_URL, formData);
+      const response = await axios.post("/api/users/lecturer", formData);
+      toast.success('Lecturer created successfully!');
 
-      const newLecturer = response.data;
+      // const newLecturer = response.data;
 
-      setRows((oldRows) => [
-        ...oldRows,
-        {
-          ...newLecturer,
-          isNew: true,
-        },
-      ]);
+      // setRows((oldRows) => [
+      //   ...oldRows,
+      //   {
+      //     ...newLecturer,
+      //     isNew: true,
+      //   },
+      // ]);
 
-      setRowModesModel((oldModel) => ({
-        ...oldModel,
-        [newLecturer._id]: {
-          mode: GridRowModes.Edit,
-          fieldToFocus: 'firstname',
-        },
-      }));
+      // setRowModesModel((oldModel) => ({
+      //   ...oldModel,
+      //   [newLecturer._id]: {
+      //     mode: GridRowModes.Edit,
+      //     fieldToFocus: 'firstname',
+      //   },
+      // }));
     } catch (error: any) {
       console.error('Error creating lecturer:', error.message);
     }
@@ -144,29 +133,28 @@ function EditToolbar(props: EditToolbarProps) {
       <TextField
         label="First Name"
         value={formData.firstname}
-        onChange={handleInputChange('firstname')}
+        onChange={(e) => setFormData({ ...formData, firstname: e.target.value })}
       />
       <TextField
         label="Last Name"
         value={formData.lastname}
-        onChange={handleInputChange('lastname')}
+        onChange={(e) => setFormData({ ...formData, lastname: e.target.value })}
       />
       <TextField
         label="Email"
         value={formData.email}
-        onChange={handleInputChange('email')}
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
       />
       <TextField
         label="Password"
         value={formData.password}
-        onChange={handleInputChange('password')}
+        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
       />
       <TextField
         label="Emp Number"
         value={formData.employeeNumber}
-        onChange={handleInputChange('employeeNumber')}
+        onChange={(e) => setFormData({ ...formData, employeeNumber: e.target.value })}
       />
-      {/* Add other input fields as needed */}
 
       <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
         Add record
@@ -181,19 +169,15 @@ export default function FullFeaturedCrudGrid() {
     {}
   );
 
-  React.useEffect(() => {
-    // Fetch lecturers when the component mounts
-    const fetchLecturers = async () => {
-      try {
-        const response = await axios.get(API_URL);
-        const lecturers = response.data;
-        setRows(lecturers);
-      } catch (error) {
-        console.error("Error fetching lecturers:", error);
-      }
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const usersData = await getUsers();
+      setUsers(usersData);
     };
 
-    fetchLecturers();
+    fetchData();
   }, []);
 
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
@@ -374,7 +358,7 @@ export default function FullFeaturedCrudGrid() {
     >
       <Header category="Page" title="Lecturers" />
       <DataGrid
-        rows={rows}
+        rows={ users }
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}

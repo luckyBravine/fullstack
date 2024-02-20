@@ -1,9 +1,11 @@
-import { NextRequest, NextResponse } from "next/server"; // To handle the request and response
-import { promises as fs } from "fs"; // To save the file temporarily
-import { v4 as uuidv4 } from "uuid"; // To generate a unique filename
-import PDFParser from "pdf2json"; // To parse the pdf
+import { NextRequest, NextResponse } from "next/server";
+import { promises as fs } from "fs";
+import { v4 as uuidv4 } from "uuid";
+import PDFParser from "pdf2json";
 import { connect } from "@/dbConfig/dbConfig";
-import Timetable from "@/app/Admin/Timetable/page";
+import { Timetable } from "@/models/timetableModel";
+// import {Timetable} from "@/app/Admin/Timetable/page";
+// import Timetable from "@/app/Admin/Timetable/page";
 
 connect();
 
@@ -15,78 +17,85 @@ export async function POST(req: NextRequest) {
     let parsedText = "";
 
     if (uploadedFiles && uploadedFiles.length > 0) {
-      const uploadedFile = uploadedFiles[1];
-      console.log("Uploaded file:", uploadedFile);
+      const uploadedFile = uploadedFiles[1]; // Corrected index
+      console.log("uploaded file:", uploadedFile)
 
-      // const hasPdf = await Timetable.findOne({ uploadedFile });
+      fileName = uuidv4();
+      // const tempFilePath = `/tmp/${fileName}.pdf`;
+      const fileBuffer = Buffer.from(await uploadedFile.arrayBuffer());
+      // await fs.writeFile(tempFilePath, fileBuffer);
 
-      //   if (hasPdf) {
-      //    return NextResponse.json(
-      //       { error: "PDF already exist" },
-      //       { status: 400 }
-      //     );
-      //  }
+      // Create PDF details object
+      const pdfDetails = await {
+        size: uploadedFile.size,
+        type: uploadedFile.type,
+        name: uploadedFile.name,
+        lastModified: uploadedFile.lastModified.toString(),
+      };
+      console.log("PDF Details:", pdfDetails);
 
-      //    const newPDF = new Timetable({
-      //      uploadedFiles,
-      //  }).save();
+      // Create a new instance of Timetable with PDF details
 
-      // Check if uploadedFile is of type File
-      if (uploadedFile instanceof File) {
-        // Generate a unique filename
-        fileName = uuidv4();
-
-        // Convert the uploaded file into a temporary file
-        const tempFilePath = `/tmp/${fileName}.pdf`;
-
-        // Convert ArrayBuffer to Buffer
-        const fileBuffer = Buffer.from(await uploadedFile.arrayBuffer());
-
-        // Save the buffer as a file
-        await fs.writeFile(tempFilePath, fileBuffer);
-
-        // Parse the pdf using pdf2json. See pdf2json docs for more info.
-
-        // The reason I am bypassing type checks is because
-        // the default type definitions for pdf2json in the npm install
-        // do not allow for any constructor arguments.
-        // You can either modify the type definitions or bypass the type checks.
-        // I chose to bypass the type checks.
-        const pdfParser = new (PDFParser as any)(null, 1);
+      const newPDF = new Timetable(pdfDetails);
+      await newPDF.save();
+      console.log("New PDF:", newPDF);
 
 
-        // See pdf2json docs for more info on how the below works.
-        pdfParser.on("pdfParser_dataError", (errData: any) =>
-          console.log(errData.parserError)
-        );
+      // Send response
+      const response = NextResponse.json({
+        message: "User created successfully",
+        success: true,
+        status: 201,
+        pdf: newPDF,
+      });
+      response.headers.set("FileName", fileName);
+      return response; // Return the response here
 
-        pdfParser.on("pdfParser_dataReady", () => {
-          console.log((pdfParser as any).getRawTextContent());
-          parsedText = (pdfParser as any).getRawTextContent();
-        });
-
-        pdfParser.loadPDF(tempFilePath);
-        console.log("helllo")
-      } else {
-        console.log("Uploaded file is not in the expected format.");
-      }
     } else {
       console.log("No files found.");
     }
-    // const newPDF = new Timetable({})
+  } catch (error: any) {
+    // Handle errors here
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 
-    // let pdf = await newPDF.save();
-    // console.log(pdf);
+  // In case no files are found or the file is not in the expected format,
+  // return an appropriate response outside the try-catch block
+  return NextResponse.json({ error: "No files found or invalid format" }, { status: 400 });
+}
 
-    // const response = new NextResponse(parsedText);
-    // response.headers.set("FileName", fileName);
-    // return NextResponse.json({
-    //   message: "User created successfully",
-    //   success: true,
-    //   status: 201,
-    //   pdf
-    // });
+
+export async function GET(request: NextRequest){
+  try {
+    const timetables = await Timetable.find();
+    const rows = Array.isArray(timetables ) ? timetables .map(timetable => timetable.toObject()) : [];
+    return NextResponse.json(rows);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const  id  = req.nextUrl.searchParams.get("id"); 
+
+    // Check if id is provided
+    if (!id) {
+      return NextResponse.json({ error: "No id provided for deletion" }, { status: 400 });
+    }
+
+    // Find the timetable by id and delete it
+    const deletedTimetable = await Timetable.findByIdAndDelete(id);
+
+    if (!deletedTimetable) {
+      return NextResponse.json({ error: "Timetable not found" }, { status: 404 });
+    }
+
+    // Send response with the deleted timetable
+    return NextResponse.json({ message: "Timetable deleted successfully", deletedTimetable });
+  } catch (error: any) {
+    // Handle errors here
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
