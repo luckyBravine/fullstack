@@ -31,14 +31,18 @@ import Header from "../Header/page";
 import Footer from "../Footer/page";
 import { TextField } from "@mui/material";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const roles = ["Lesson", "HOD", "Development"];
 const randomRole = () => {
   return randomArrayItem(roles);
 };
 
+
+
 const API_URL = "/api/users/lecturer";
 const getUsers = async () => {
+  // const router = useRouter();
   try {
     const response = await axios.get("/api/users/lecturer");
     toast.success('User exists');
@@ -55,6 +59,7 @@ const getUsers = async () => {
         }))
       : [];
       console.log(transformedUsers )
+      // router.refresh();
     return transformedUsers;
     
   } catch (error: any) {
@@ -63,6 +68,19 @@ const getUsers = async () => {
     return [];
   }
 };
+
+// const getLecturerById = async ({id}) => {
+//   // const router = useRouter();
+//   try {
+//     const response = await axios.get(`/api/users/lecturer?id=${id}`);
+//     console.log(response)
+    
+//   } catch (error: any) {
+//     console.error("Failed to fetch users", error.message);
+//     toast.error(error.message);
+//     return [];
+//   }
+// };
 
 const initialRows: GridRowsProp = [
   // {
@@ -82,6 +100,7 @@ interface EditToolbarProps {
 }
 
 function EditToolbar(props: EditToolbarProps) {
+
   const { setRows, setRowModesModel } = props;
   const [formData, setFormData] = useState({
     firstname: '',
@@ -105,23 +124,6 @@ function EditToolbar(props: EditToolbarProps) {
       const response = await axios.post("/api/users/lecturer", formData);
       toast.success('Lecturer created successfully!');
 
-      // const newLecturer = response.data;
-
-      // setRows((oldRows) => [
-      //   ...oldRows,
-      //   {
-      //     ...newLecturer,
-      //     isNew: true,
-      //   },
-      // ]);
-
-      // setRowModesModel((oldModel) => ({
-      //   ...oldModel,
-      //   [newLecturer._id]: {
-      //     mode: GridRowModes.Edit,
-      //     fieldToFocus: 'firstname',
-      //   },
-      // }));
     } catch (error: any) {
       console.error('Error creating lecturer:', error.message);
     }
@@ -164,19 +166,28 @@ function EditToolbar(props: EditToolbarProps) {
 }
 
 export default function FullFeaturedCrudGrid() {
+  const router = useRouter();
   const [rows, setRows] = React.useState(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
+  const [lecturer, setLecturer] = useState({
+    newFirstName: '',
+    newLastName: '',
+    newEmail: '',
+    newPassword: '',
+    newEmployeeNumber: '',
+  });
 
   const [users, setUsers] = useState([]);
+  
+
 
   useEffect(() => {
     const fetchData = async () => {
       const usersData = await getUsers();
       setUsers(usersData);
     };
-
     fetchData();
   }, []);
 
@@ -196,7 +207,7 @@ export default function FullFeaturedCrudGrid() {
 
       setRows((oldRows) => {
         const updatedRows = oldRows.map((row) =>
-          row._id === id ? { ...row, ...response.data, isNew: false } : row
+          row.id === id ? { ...row, ...response.data, isNew: false } : row
         );
         return updatedRows;
       });
@@ -207,30 +218,155 @@ export default function FullFeaturedCrudGrid() {
     }
   };
 
+  // const handleSaveClick = (id: GridRowId) => async () => {
+  //   try {
+  //     const updatedRow = await axios.put(`/api/users/lecturer?id=${id}`, {
+  //       // Assuming you have the updated data available in the row
+  //       firstname: users.find((row) => row._id === id)?.firstname || "",
+  //       lastname: users.find((row) => row._id === id)?.lastname || "",
+  //       email: users.find((row) => row._id === id)?.email || "",
+  //       password: users.find((row) => row._id === id)?.password || "",
+  //       isVerified: users.find((row) => row._id === id)?.isVerified || false,
+  //       employeeNumber:
+  //       users.find((row) => row._id === id)?.employeeNumber || "",
+  //     });
+
+  //     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  //     processRowUpdate(updatedRow.data);
+  //   } catch (error) {
+  //     console.error("Error updating lecturer:", error);
+  //   }
+  // };
+  // const handleSaveClick = (id: GridRowId) => async () => {
+  //   try { 
+  //     const [lecturer, setLecturer]  = useState({
+  //       newFirstName: '',
+  //       newLastName: '',
+  //       newEmail: '',
+  //       newPassword: '',
+  //       newEmployeeNumber: '',
+  //     });
+  //     // Find the user with the specified id in the users array
+  //     const userToUpdate = lecturer.find((row) => row._id === id);
+  //     const fetchId = async (_id) => {
+  //       const lecturerData = await getLecturerById({id});
+  //       setLecturer(lecturerData);
+  //     };
+  //     fetchId(id  )
+  
+  //     // Check if user exists
+  //     if (!userToUpdate) {
+  //       console.error("User not found");
+  //       return;
+  //     }
+  
+  //     // Prepare the data to update
+  //     const updatedData = {
+  //       newFirstName: userToUpdate.firstname || "",
+  //       newLastName: userToUpdate.lastname || "",
+  //       newEmail: userToUpdate.email || "",
+  //       newPassword: userToUpdate.password || "",
+  //       isVerified: userToUpdate.isVerified || false,
+  //       newEmployeeNumber: userToUpdate.employeeNumber || "",
+  //     };
+  
+  //     // Send the update request
+  //     const updatedRow = await axios.put(`/api/users/lecturer?id=${id}`, updatedData);
+  //     console.log(updatedData)
+  
+  //     // Update the row mode and process the row update
+  //     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  //     processRowUpdate(updatedRow.data);
+  //   } catch (error) {
+  //     console.error("Error updating lecturer:", error);
+  //     // Handle the error as needed
+  //   }
+  // };
+  // const handleSaveClick = (id: GridRowId) => async () => {
+  //   try {
+  //     console.log('Users:', users);
+  //     console.log('ID to update:', id);
+  //     const userToUpdate = users.find((row) => row.id === id);
+  //     console.log('User to update:', userToUpdate);
+
+  //     // Check if user exists
+  //     // if (!userToUpdate) {
+  //     //   console.error("User not found");
+  //     //   return;
+  //     // }
+
+  //     // Prepare the data to update
+  //     const updatedData = {
+  //       newFirstName: userToUpdate.firstname || "",
+  //       newLastName: userToUpdate.lastname || "",
+  //       newEmail: userToUpdate.email || "",
+  //       newPassword: userToUpdate.password || "",
+  //       isVerified: userToUpdate.isVerified || false,
+  //       newEmployeeNumber: userToUpdate.employeeNumber || "",
+  //     };
+
+  //     // Send the update request
+  //     const updatedRow = await axios.put(`/api/users/lecturer?id=${id}`, updatedData);
+  //     console.log('Updated data:', updatedData);
+
+  //     // Update the row mode and process the row update
+  //     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  //     processRowUpdate(updatedRow.data);
+  //   } catch (error) {
+  //     console.error("Error updating lecturer:", error);
+  //     // Handle the error as needed
+  //   }
+  // };
+  
+  const [updatedData, setUpdatedData] = useState({
+    newFirstName: '',
+    newLastName: '',
+    newEmail: '',
+    newPassword: '',
+    newEmployeeNumber: '',
+  });
+  
   const handleSaveClick = (id: GridRowId) => async () => {
     try {
-      const updatedRow = await axios.post(`${API_URL}/${id}`, {
-        // Assuming you have the updated data available in the row
-        firstname: rows.find((row) => row._id === id)?.firstname || "",
-        lastname: rows.find((row) => row._id === id)?.lastname || "",
-        email: rows.find((row) => row._id === id)?.email || "",
-        password: rows.find((row) => row._id === id)?.password || "",
-        isVerified: rows.find((row) => row._id === id)?.isVerified || false,
-        employeeNumber:
-          rows.find((row) => row._id === id)?.employeeNumber || "",
-      });
-
+      // Find the user with the specified id in the users array
+      const userToUpdate = users.find((row) => row.id === id);
+  
+      // Check if user exists
+      if (!userToUpdate) {
+        console.error("User not found");
+        return;
+      }
+  
+      // Prepare the data to update
+      const updateData = {
+        newFirstName: userToUpdate.firstname,
+        newLastName: userToUpdate.lastname,
+        newEmail: userToUpdate.email,
+        newPassword: userToUpdate.password,
+        isVerified: userToUpdate.isVerified || false,
+        newEmployeeNumber: userToUpdate.employeeNumber,
+      };
+      console.log(updateData)
+      // setUpdatedData(updateData);
+  
+      // Send the update request
+      const updatedRow = await axios.put(`/api/users/lecturer?id=${id}`, setUpdatedData(updateData));
+  
       setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
       processRowUpdate(updatedRow.data);
     } catch (error) {
       console.error("Error updating lecturer:", error);
+      // Handle the error as needed
     }
   };
+  
+
 
   const handleDeleteClick = (id: GridRowId) => async () => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
-      setRows(rows.filter((row) => row._id !== id));
+      await axios.delete(`/api/users/lecturer?id=${id}`);
+      setUsers(users.filter((user) => user._id !== id));
+      router.refresh()
     } catch (error) {
       console.error("Error deleting lecturer:", error);
     }
@@ -238,7 +374,7 @@ export default function FullFeaturedCrudGrid() {
 
   const handleCancelClick = (id: GridRowId) => async () => {
     try {
-      const editedRow = rows.find((row) => row._id === id);
+      const editedRow = users.find((user) => user._id === id);
 
       if (editedRow) {
         if (editedRow.isNew) {
@@ -276,7 +412,6 @@ export default function FullFeaturedCrudGrid() {
     {
       field: "employeeNumber",
       headerName: "EmployeeNumber",
-      type: "number",
       width: 200,
       align: "left",
       headerAlign: "left",
