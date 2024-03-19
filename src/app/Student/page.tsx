@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { IoMdHome, IoMdNotificationsOutline } from "react-icons/io";
 import { AiOutlinePrinter } from "react-icons/ai";
+import { IoIosLogOut } from "react-icons/io";
 import Notification from "./Components/Notification/Notification";
 import Link from "next/link";
 import Bsc_SE from "./table";
@@ -887,19 +888,16 @@ const Student = () => {
     setSelectedItems(newSelectedItems);
     setCurrentTimeOfDay(timeOfDay);
   };
-  // const handleItemClick = (time) => {
-  //   setCurrentTimeOfDay(time);
-  // };
 
 
 
   return (
-    <main className="flex flex-col justify-center place-items-center items-center mx-auto w-full ">
+    <main className="flex flex-col justify-center place-items-center items-center mx-auto w-full overflow-x-hidden">
       <nav className="py-6 flex justify-between place-items-center  items-center mx-auto relative  w-[100vw] shadow-lg">
         <div className="flex items-center w-[80%] mx-auto justify-around">
-          <Link className="bg-[#313131] p-1 rounded-full flex justify-center items-center" href="/">
+          <Link className="bg-[#313131] border border-gray-700 p-1 rounded-lg flex justify-center items-center" href="/">
             <div className="flex items-center">
-              <IoMdHome className="relative w-5 h-5 ml-2 mr-1 text-slate-300" />
+              <IoMdHome className="relative w-5 h-5 ml-1 mr-1 text-slate-300" />
               <span className=" text-base text-slate-300">Home</span>
             </div>
           </Link>
@@ -908,7 +906,7 @@ const Student = () => {
             <select
               value={selectedCourse}
               onChange={(e) => setSelectedCourse(e.target.value)}
-              className="border border-gray-500 text-black rounded-md px-2 py-1 mr-2"
+              className="border border-gray-700 bg-[#313131] rounded-lg px-2 py-1 mr-2"
             >
               {Object.keys(courseOptions).map((course) => (
                 <option key={course} value={course}>
@@ -920,7 +918,7 @@ const Student = () => {
             <select
               value={selectedYear}
               onChange={(e) => setSelectedYear(e.target.value)}
-              className="border border-gray-500 text-black rounded-md px-3 py-1"
+              className="border border-gray-700 bg-[#313131] rounded-lg px-3 py-1"
             >
               {yearOptions.map((year) => (
                 <option key={year} value={year}>
@@ -931,21 +929,30 @@ const Student = () => {
           </div>
           <div>
             <button
-              className="bg-[#313131]  p-1 rounded-full w-7 h-7 flex justify-center items-center relative"
+              className="bg-[#313131] border border-gray-700 p-1 rounded-lg w-7 h-7 flex justify-center items-center relative"
               onClick={() => setShowNotification(!showNotification)}
             >
               <IoMdNotificationsOutline className="relative w-6 h-6 text-slate-300" />
               {showNotification ? (
-                <div className="absolute bg-green-400 w-3 h-3 rounded-full top-[-3px] ml-4"></div>
+                <div className="absolute bg-green-400 w-3 h-3 rounded-full top-[-3px] ml-5"></div>
               ) : null}
             </button>
             {showNotification ? null : <Notification />}
           </div>
+          
           <div>
-            <button className="bg-[#313131] p-1 rounded-full flex justify-center items-center">
-              <BsFileEarmarkText className="relative text-lg ml-3 mr-1 text-slate-300" />
+            <button className="bg-[#313131] border border-gray-700 p-1 rounded-lg flex justify-center items-center">
+              <BsFileEarmarkText className="relative text-lg ml-1 mr-1 text-slate-300" />
               <span className=" mr-1 text-base text-slate-300">
                 SC211/1088/2019
+              </span>
+            </button>
+          </div>
+          <div>
+            <button className="bg-[#313131] border border-gray-700 p-1 rounded-lg flex justify-center items-center">
+              <IoIosLogOut className="relative text-lg ml-1 mr-1 text-slate-300" />
+              <span className=" mr-1 text-base text-slate-300">
+                LogOut
               </span>
             </button>
           </div>
@@ -953,55 +960,62 @@ const Student = () => {
       </nav>
       <section className="grid my-6 gap-x-0 items-center place-items-center justify-center overflow-x-hidden mx-auto w-full grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
         {selectedTimetable && Object.keys(selectedTimetable).map((day, dayIndex) => (
-          <div key={dayIndex} className="flex flex-col justify-center mx-auto place-items-center items-center bg-stone-800 rounded-lg w-[80%]">
-            <h2 className="text-xl font-bold">{day}</h2>
+          <div key={dayIndex} className="flex flex-col justify-center mx-auto place-items-center items-center border border-gray-700 bg-stone-800 rounded-lg w-[80%]">
+
             {selectedTimetable[day][currentTimeOfDay] && (
-              <div className="flex flex-col justify-center mx-auto w-full p-3">
-                <div className="flex items-center my-2">
-                  <label htmlFor="" className="text-slate-200 text-base">
-                    Unit:
-                  </label>
-                  <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].unit}</span>
+              <>
+                <div className="flex items-center justify-between p-3 bg-stone-900 w-full rounded-t-lg">
+                  <h2 className="text-xl font-bold">{day}</h2>
+                  <span className="font-semibold text-base text-slate-200">{selectedTimetable[day][currentTimeOfDay].course_name}</span>
                 </div>
-                <div className="flex items-center my-2">
-                  <label htmlFor="" className="text-slate-200 text-base">
-                    Time:
-                  </label>
-                  <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].time}</span>
+                <div className="flex flex-col justify-center mx-auto w-full p-3 ">
+
+                  <div className="flex items-center my-2">
+                    <label htmlFor="" className="text-slate-200 text-base">
+                      Unit:
+                    </label>
+                    <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].unit}</span>
+                  </div>
+                  <div className="flex items-center my-2">
+                    <label htmlFor="" className="text-slate-200 text-base">
+                      Time:
+                    </label>
+                    <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].time}</span>
+                  </div>
+                  <div className="flex items-center my-2">
+                    <label htmlFor="" className="text-slate-200 text-base">
+                      Venue:
+                    </label>
+                    <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].venue}</span>
+                  </div>
+                  <div className="flex items-center my-2">
+                    <label htmlFor="" className="text-slate-200 text-base">
+                      Lecturer:
+                    </label>
+                    <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].lec}</span>
+                  </div>
+                  <div className="flex mx-auto w-full py-3 items-center">
+                    <Image
+                      alt={selectedTimetable[day][currentTimeOfDay].lec}
+                      src={selectedTimetable[day][currentTimeOfDay].img}
+                      className="w-8 h-7 object-cover rounded-full"
+                    />
+                    <span className="font-semibold text-base ml-3">
+                      {selectedTimetable[day][currentTimeOfDay].lec}
+                    </span>
+                  </div>
+                  <div className="flex justify-center mx-auto w-full p-3 items-center">
+                    {timesOfDay.map((time, index) => (
+                      <div
+                        key={time}
+                        onClick={() => handleItemClick(index, time)}
+                        className={`bg-slate-50 w-3 h-3 rounded-full mx-1 cursor-pointer ${currentTimeOfDay === time ? "opacity-100" : "opacity-50"
+                          }`}
+                      ></div>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex items-center my-2">
-                  <label htmlFor="" className="text-slate-200 text-base">
-                    Venue:
-                  </label>
-                  <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].venue}</span>
-                </div>
-                <div className="flex items-center my-2">
-                  <label htmlFor="" className="text-slate-200 text-base">
-                    Lecturer:
-                  </label>
-                  <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].lec}</span>
-                </div>
-                <div className="flex mx-auto w-full py-3 items-center">
-                  <Image
-                    alt={selectedTimetable[day][currentTimeOfDay].lec}
-                    src={selectedTimetable[day][currentTimeOfDay].img}
-                    className="w-8 h-7 object-cover rounded-full"
-                  />
-                  <span className="font-semibold text-sm ml-3">
-                    {selectedTimetable[day][currentTimeOfDay].lec}
-                  </span>
-                </div>
-                <div className="flex justify-center mx-auto w-full p-3 items-center">
-                  {timesOfDay.map((time, index) => (
-                    <div
-                      key={time}
-                      onClick={() => handleItemClick(index, time)}
-                      className={`bg-slate-100 w-3 h-3 rounded-full mx-1 cursor-pointer ${currentTimeOfDay === time ? "opacity-100" : "opacity-50"
-                        }`}
-                    ></div>
-                  ))}
-                </div>
-              </div>
+              </>
             )}
           </div>
         ))}
