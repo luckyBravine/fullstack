@@ -1,43 +1,96 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+// const withTM = require('next-transpile-modules')(['canvas']);
+
+// const nextConfig = {
+//   experimental: {
+//     serverComponentsExternalPackages: ["pdf2json"],
+//   },
+//   images: {
+//     remotePatterns: [
+//       {
+//         protocol: "https",
+//         hostname: "http://localhost:3000/profile",
+//         port: "",
+//         pathname: "../../../public/**",
+//       },
+//     ],
+//   },
+//   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+//     // Add a rule for handling binary files with node-loader
+//     config.module.rules.push({
+//       test: /\.(node)$/i,
+//       use: 'node-loader',
+//     });
+
+//     // Add CSS support with CSS loader for custom CSS files
+//     config.module.rules.push({
+//       test: /\.css$/i,
+//       exclude: /node_modules/,
+//       use: ['style-loader', 'css-loader'],
+//     });
+
+//     // Use the default CSS handling for CSS files in node_modules
+//     config.module.rules.push({
+//       test: /\.css$/i,
+//       include: /node_modules/,
+//       use: defaultLoaders.css,
+//     });
+
+//     return config;
+//   },
+// };
+
+// module.exports = withTM(nextConfig);
+// next.config.js
+const withTM = require('next-transpile-modules')(['canvas']);
+
+module.exports = withTM({
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.node = {
+        fs: 'empty',
+      };
+    }
+
+    return config;
+  },
   experimental: {
-    serverComponentsExternalPackages: ["pdf2json"],
+    serverComponentsExternalPackages: ['pdf2json'],
   },
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "http://localhost:3000/profile",
-        port: "",
-        pathname: "../../../public/**",
+        protocol: 'https',
+        hostname: 'http://localhost:3000/profile',
+        port: '',
+        pathname: '../../../public/**',
       },
     ],
   },
-};
+});
 
-module.exports = nextConfig;
-// // const nextConfig = {
-//   reactStrictMode: true,
-//   experimental: {
-//     // …
-//     serverComponentsExternalPackages: ['@react-pdf/renderer'],
-//   },
-//   webpack: (config, { webpack }) => {
-//     config.experiments = {
-//       ...config.experiments,
-//       topLevelAwait: true,
-//     };
-//     config.externals.push({
-//       sharp: "commonjs sharp",
-//       canvas: "commonjs canvas",
-//     });
-//     config.plugins.push(
-//       new webpack.ProvidePlugin({
-//         Buffer: ["buffer", "Buffer"],
-//         process: "process/browser",
-//       })
-//     );
-//     return config;
-//   },
-// };
-// module.exports = nextConfig
+module.exports = {
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Add a rule for handling binary files with node-loader
+    config.module.rules.push({
+      test: /\.(node)$/i,
+      use: 'node-loader',
+    });
+
+    // Add CSS support with CSS loader for custom CSS files
+    config.module.rules.push({
+      test: /\.css$/i,
+      exclude: /node_modules/,
+      use: ['style-loader', 'css-loader', 'postcss-loader'],
+    });
+
+    // Use the default CSS handling for CSS files in node_modules
+    config.module.rules.push({
+      test: /\.css$/i,
+      include: /node_modules/,
+      use: defaultLoaders.css,
+    });
+
+    return config;
+  },
+};

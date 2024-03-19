@@ -8,62 +8,76 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import Image from "next/image";
 import { useState } from "react";
 
+
 const Notification = () => {
+  const [showNotification, setShowNotification] = useState(true);
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      name: "Dr. Patel Sighn",
+      message: "Let's meet at 2pm, venue F1,2.",
+      img: dr_Njeri,
+    },
+    {
+      id: 2,
+      name: "Dr. Njeri Ndugu",
+      message: "No class today, Revise the notes.",
+      img: dr_patel,
+    }
+  ]);
+
+  const deleteNotification = (id) => {
+    setNotifications(notifications.filter((notification) => notification.id !== id));
+  };
+
+  const markAllAsRead = () => {
+    setNotifications([]);
+  };
   return (
-    <main className="bg-white absolute top-18 rounded w-[300px] flex flex-col">
-      <div className=" rounded-t p-2 flex justify-between shadow-sm w-full mx-auto items-center">
-        <div className="flex justify-center ">
-          <span className="mr-2">0</span>
-          <h1>Notifications</h1>
+    <div className={`absolute top-20 z-50 ${showNotification ? 'block' : 'hidden'}`}>
+      <main className="bg-white rounded-lg shadow-lg w-80">
+        <div className="flex items-center justify-between px-4 py-2 bg-blue-100 rounded-t-lg">
+          <div className="flex justify-center ">
+            <span className="mr-2 text-stone-800 font-semibold">{notifications.length}</span>
+            <h1 className="text-black font-bold">Notifications</h1>
+          </div>
+          <button onClick={() => setShowNotification(false)}>
+            <IoClose className="text-black" />
+          </button>
         </div>
-        {/* <button className="right-0 left-0 flex-end bg-white h-6 w-6 flex justify-center rounded-full">
-          <IoClose />
-        </button> */}
-      </div>
-      <div className="my-2">
-        <div className="p-1 flex justify-evenly">
-          <Image
-            src={dr_patel}
-            alt="dr Patel"
-            className="w-8 h-8 rounded-full object-cover"
-          />
-          <div className="flex flex-col">
-            <div className="flex justify-between">
-              <h1 className="text-sm font-bold">Dr. Patel Sighn</h1>
-              <span className="text-stone-500 text-sm font-poppins">2 sec</span>
+        <div className="my-1">
+          {notifications.map((notification) => (
+            <div key={notification.id} className="p-1 flex justify-evenly bg-slate-300 rounded my-1 mx-2 hover:mx-0">
+              <div className="flex items-center">
+                <Image
+                  src={notification.img}
+                  alt={notification.name}
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+                <div className="ml-2 flex flex-col">
+                  <div className="flex justify-between">
+                    <h1 className="text-sm font-bold text-stone-600">{notification.name}</h1>
+                    <span className="text-stone-500 text-sm font-poppins">2 sec</span>
+                  </div>
+                  <p className="text-stone-500 text-sm font-poppins">{notification.message}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => deleteNotification(notification.id)}
+                className="flex justify-center align-center place-items-center"
+              >
+                <RiDeleteBin6Line className="text-red-400" />
+              </button>
             </div>
-            <p className="text-stone-600 text-sm font-poppins">
-              Lorem, ipsum dolor sit.
-            </p>
-          </div>
-          <div className="flex justify-center align-center place-items-center">
-            <RiDeleteBin6Line />
-          </div>
+          ))}
         </div>
-        <div className="p-1 flex justify-evenly">
-          <Image
-            src={dr_Njeri}
-            alt="dr Patel"
-            className="w-8 h-8 rounded-full object-cover"
-          />
-          <div className="flex flex-col">
-            <div className="flex justify-between">
-              <h1 className="text-sm font-bold">Dr. Njeri Ndugu</h1>
-              <span className="text-stone-500 text-sm font-poppins">4 sec</span>
-            </div>
-            <p className="text-stone-600 text-sm font-poppins">
-              Lorem, ipsum dolor sit.
-            </p>
-          </div>
-          <div className="flex justify-center align-center place-items-center">
-            <RiDeleteBin6Line />
-          </div>
+        <div className="py-2 bg-blue-200 rounded-b-lg text-center" onClick={() => markAllAsRead()}>
+          <h1 className="text-sm font-semibold text-gray-600 hover:text-gray-800 cursor-pointer">
+            Mark all as read
+          </h1>
         </div>
-      </div>
-      <div className="py-2 bottom-0 text-center bg-blue-400 rounded-b">
-        <h1 className="text-base text-white">Mark all as read</h1>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 };
 

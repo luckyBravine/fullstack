@@ -42,7 +42,6 @@ const randomRole = () => {
 
 const API_URL = "/api/users/lecturer";
 const getUsers = async () => {
-  // const router = useRouter();
   try {
     const response = await axios.get("/api/users/lecturer");
     toast.success('User exists');
@@ -59,7 +58,6 @@ const getUsers = async () => {
         }))
       : [];
       console.log(transformedUsers )
-      // router.refresh();
     return transformedUsers;
     
   } catch (error: any) {
@@ -69,27 +67,9 @@ const getUsers = async () => {
   }
 };
 
-// const getLecturerById = async ({id}) => {
-//   // const router = useRouter();
-//   try {
-//     const response = await axios.get(`/api/users/lecturer?id=${id}`);
-//     console.log(response)
-    
-//   } catch (error: any) {
-//     console.error("Failed to fetch users", error.message);
-//     toast.error(error.message);
-//     return [];
-//   }
-// };
 
 const initialRows: GridRowsProp = [
-  // {
-  //   id: _id,
-  //   name: randomTraderName(),
-  //   age: 25,
-  //   joinDate: randomCreatedDate(),
-  //   role: randomRole(),
-  // },
+  
 ];
 
 interface EditToolbarProps {
@@ -100,6 +80,8 @@ interface EditToolbarProps {
 }
 
 function EditToolbar(props: EditToolbarProps) {
+  const router = useRouter();
+  
 
   const { setRows, setRowModesModel } = props;
   const [formData, setFormData] = useState({
@@ -123,6 +105,7 @@ function EditToolbar(props: EditToolbarProps) {
 
       const response = await axios.post("/api/users/lecturer", formData);
       toast.success('Lecturer created successfully!');
+      router.refresh();
 
     } catch (error: any) {
       console.error('Error creating lecturer:', error.message);
@@ -218,149 +201,26 @@ export default function FullFeaturedCrudGrid() {
     }
   };
 
-  // const handleSaveClick = (id: GridRowId) => async () => {
-  //   try {
-  //     const updatedRow = await axios.put(`/api/users/lecturer?id=${id}`, {
-  //       // Assuming you have the updated data available in the row
-  //       firstname: users.find((row) => row._id === id)?.firstname || "",
-  //       lastname: users.find((row) => row._id === id)?.lastname || "",
-  //       email: users.find((row) => row._id === id)?.email || "",
-  //       password: users.find((row) => row._id === id)?.password || "",
-  //       isVerified: users.find((row) => row._id === id)?.isVerified || false,
-  //       employeeNumber:
-  //       users.find((row) => row._id === id)?.employeeNumber || "",
-  //     });
-
-  //     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  //     processRowUpdate(updatedRow.data);
-  //   } catch (error) {
-  //     console.error("Error updating lecturer:", error);
-  //   }
-  // };
-  // const handleSaveClick = (id: GridRowId) => async () => {
-  //   try { 
-  //     const [lecturer, setLecturer]  = useState({
-  //       newFirstName: '',
-  //       newLastName: '',
-  //       newEmail: '',
-  //       newPassword: '',
-  //       newEmployeeNumber: '',
-  //     });
-  //     // Find the user with the specified id in the users array
-  //     const userToUpdate = lecturer.find((row) => row._id === id);
-  //     const fetchId = async (_id) => {
-  //       const lecturerData = await getLecturerById({id});
-  //       setLecturer(lecturerData);
-  //     };
-  //     fetchId(id  )
-  
-  //     // Check if user exists
-  //     if (!userToUpdate) {
-  //       console.error("User not found");
-  //       return;
-  //     }
-  
-  //     // Prepare the data to update
-  //     const updatedData = {
-  //       newFirstName: userToUpdate.firstname || "",
-  //       newLastName: userToUpdate.lastname || "",
-  //       newEmail: userToUpdate.email || "",
-  //       newPassword: userToUpdate.password || "",
-  //       isVerified: userToUpdate.isVerified || false,
-  //       newEmployeeNumber: userToUpdate.employeeNumber || "",
-  //     };
-  
-  //     // Send the update request
-  //     const updatedRow = await axios.put(`/api/users/lecturer?id=${id}`, updatedData);
-  //     console.log(updatedData)
-  
-  //     // Update the row mode and process the row update
-  //     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  //     processRowUpdate(updatedRow.data);
-  //   } catch (error) {
-  //     console.error("Error updating lecturer:", error);
-  //     // Handle the error as needed
-  //   }
-  // };
-  // const handleSaveClick = (id: GridRowId) => async () => {
-  //   try {
-  //     console.log('Users:', users);
-  //     console.log('ID to update:', id);
-  //     const userToUpdate = users.find((row) => row.id === id);
-  //     console.log('User to update:', userToUpdate);
-
-  //     // Check if user exists
-  //     // if (!userToUpdate) {
-  //     //   console.error("User not found");
-  //     //   return;
-  //     // }
-
-  //     // Prepare the data to update
-  //     const updatedData = {
-  //       newFirstName: userToUpdate.firstname || "",
-  //       newLastName: userToUpdate.lastname || "",
-  //       newEmail: userToUpdate.email || "",
-  //       newPassword: userToUpdate.password || "",
-  //       isVerified: userToUpdate.isVerified || false,
-  //       newEmployeeNumber: userToUpdate.employeeNumber || "",
-  //     };
-
-  //     // Send the update request
-  //     const updatedRow = await axios.put(`/api/users/lecturer?id=${id}`, updatedData);
-  //     console.log('Updated data:', updatedData);
-
-  //     // Update the row mode and process the row update
-  //     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  //     processRowUpdate(updatedRow.data);
-  //   } catch (error) {
-  //     console.error("Error updating lecturer:", error);
-  //     // Handle the error as needed
-  //   }
-  // };
-  
-  const [updatedData, setUpdatedData] = useState({
-    newFirstName: '',
-    newLastName: '',
-    newEmail: '',
-    newPassword: '',
-    newEmployeeNumber: '',
-  });
-  
   const handleSaveClick = (id: GridRowId) => async () => {
     try {
-      // Find the user with the specified id in the users array
-      const userToUpdate = users.find((row) => row.id === id);
-  
-      // Check if user exists
-      if (!userToUpdate) {
-        console.error("User not found");
-        return;
-      }
-  
-      // Prepare the data to update
-      const updateData = {
-        newFirstName: userToUpdate.firstname,
-        newLastName: userToUpdate.lastname,
-        newEmail: userToUpdate.email,
-        newPassword: userToUpdate.password,
-        isVerified: userToUpdate.isVerified || false,
-        newEmployeeNumber: userToUpdate.employeeNumber,
-      };
-      console.log(updateData)
-      // setUpdatedData(updateData);
-  
-      // Send the update request
-      const updatedRow = await axios.put(`/api/users/lecturer?id=${id}`, setUpdatedData(updateData));
-  
+      const updatedRow = await axios.put(`/api/users/lecturer?id=${id}`, {
+        // Assuming you have the updated data available in the row
+        firstname: users.find((row) => row._id === id)?.firstname || "",
+        lastname: users.find((row) => row._id === id)?.lastname || "",
+        email: users.find((row) => row._id === id)?.email || "",
+        password: users.find((row) => row._id === id)?.password || "",
+        isVerified: users.find((row) => row._id === id)?.isVerified || false,
+        employeeNumber:
+        users.find((row) => row._id === id)?.employeeNumber || "",
+      });
+      console.log(updatedData)
+
       setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
       processRowUpdate(updatedRow.data);
     } catch (error) {
       console.error("Error updating lecturer:", error);
-      // Handle the error as needed
     }
   };
-  
-
 
   const handleDeleteClick = (id: GridRowId) => async () => {
     try {

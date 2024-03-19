@@ -4,8 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import PDFParser from "pdf2json";
 import { connect } from "@/dbConfig/dbConfig";
 import { Timetable } from "@/models/timetableModel";
-// import {Timetable} from "@/app/Admin/Timetable/page";
-// import Timetable from "@/app/Admin/Timetable/page";
+
 
 connect();
 

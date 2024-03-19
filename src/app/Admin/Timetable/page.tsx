@@ -8,7 +8,6 @@ import Footer from "../Footer/page";
 // import FileUpload from "./components/file-upload";
 import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Table from "./components/table";
 

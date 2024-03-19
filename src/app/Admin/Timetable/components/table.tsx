@@ -34,6 +34,16 @@ const getUsers = async () => {
   }
 };
 
+const sendDocumentToStudents = async (id: string) => {
+  try {
+    await axios.post(`/api/users/send?id=${id}`);
+    toast.success('Document sent to students successfully');
+  } catch (error: any) {
+    console.error('Error sending document to students:', error);
+    toast.error('Failed to send document to students');
+  }
+};
+
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
   { field: "name", headerName: "Name", width: 150, editable: true },
@@ -94,11 +104,16 @@ export default function Table() {
           columns={columns.concat({
             field: "actions",
             headerName: "Actions",
-            width: 120,
+            width: 200,
             renderCell: (params) => (
-              <button onClick={() => handleDeleteUser(params.row.id)} className="bg-red-600 p-1 rounded text-white">
-                Delete
-              </button>
+              <div className="flex w-full justify-evenly">
+                <button onClick={() => handleDeleteUser(params.row.id)} className="bg-red-600 p-1 rounded text-white">
+                  Delete
+                </button>
+                <button onClick={() => sendDocumentToStudents(params.row.id)} className="bg-green-600 p-1 rounded text-white">
+                  Post
+                </button>
+              </div>
             )
           })}
           initialState={{

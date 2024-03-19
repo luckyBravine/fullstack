@@ -1,295 +1,945 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import dr_patel from "../../../public/dr_patel.jpg";
-import dr_Njeri from "../../../public/dr_Njeri.jpg";
-import { BsSearch, BsFileEarmarkText } from "react-icons/bs";
-import { IoMdNotificationsOutline, IoMdHome } from "react-icons/io";
+import { IoMdHome, IoMdNotificationsOutline } from "react-icons/io";
 import { AiOutlinePrinter } from "react-icons/ai";
-// import Select from "react-select";
-import Notification from "./Components/Notification/Notification"
+import Notification from "./Components/Notification/Notification";
 import Link from "next/link";
-const table = [
+import Bsc_SE from "./table";
+import Bsc_CS from "./table";
+import BBIT from "./table";
+import { BsFileEarmarkText } from "react-icons/bs";
+import dr_Njeri from "../../../public/dr_Njeri.jpg";
+import lec1 from "../../../public/lec1.webp";
+import lec2 from "../../../public/lec2.webp";
+import lec3 from "../../../public/lec3.webp";
+import lec4 from "../../../public/lec4.webp";
+import Image from "next/image";
+const Bsc_IT = [
   {
-    morning: {
-      date_name: "Mon",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sinh",  
+    Y1S2: {
+      Mon: {
+        morning: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "BCE 101",
+          time: "1300hrs-1600hrs",
+          venue: "F3.1",
+          img: dr_Njeri,
+          lec: "Nyagisera",
+        },
+        late_evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+      },
+      Tue: {
+        morning: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "UCU 102",
+          time: "1000hrs-1300hrs",
+          venue: "Online",
+          img: lec1,
+          lec: "Sarah",
+        },
+        evening: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "SIT 104",
+          time: "1300hrs-1600hrs",
+          venue: "F2.2",
+          img: lec2,
+          lec: "Juliet",
+        },
+        late_evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+      },
+      Wed: {
+        morning: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "BCE 101",
+          time: "1300hrs-1600hrs",
+          venue: "F3.1",
+          img: dr_Njeri,
+          lec: "Nyagisera",
+        },
+        late_evening: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "Agina",
+        },
+      },
+      Thur: {
+        morning: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "SIT 103",
+          time: "0700hrs-1000hrs",
+          venue: "F3 Lab",
+          img: lec1,
+          lec: "J.Kimiri",
+        },
+        mid_morning: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: lec2,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None",
+        },
+      },
+      Fri: {
+        morning: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "SIT 105",
+          time: "1000hrs-1300hrs",
+          venue: "F4 Lab",
+          img: lec1,
+          lec: "G. Muturi",
+        },
+        evening: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: lec2,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None",
+        },
+      },
     },
-    mid_morning: {
-      date_name: "Mon",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "1000hrs-1300hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
+    Y2S2: {
+      Mon: {
+        morning: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "SIT 203",
+          time: "0700hrs-1000hrs",
+          venue: "F3.3",
+          img: lec3,
+          lec: "P.Kimemiah",
+        },
+        mid_morning: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+      },
+      Tue: {
+        morning: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "BCA 211/BCA 200",
+          time: "0700hrs-1000hrs",
+          venue: "F4.1,F4.2",
+          img: lec1,
+          lec: "Dr. R. Mwende",
+        },
+        mid_morning: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "EET 215",
+          time: "1000hrs-1300hrs",
+          venue: "DH4A",
+          img: lec1,
+          lec: "Gordon",
+        },
+        evening: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "SIT 204",
+          time: "1300hrs-1600hrs",
+          venue: "G4 Lab",
+          img: lec2,
+          lec: "Dr. G. Mariga",
+        },
+        late_evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+      },
+      Wed: {
+        morning: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "SIT 202",
+          time: "0700hrs-1000hrs",
+          venue: "F3.1",
+          img: dr_Njeri,
+          lec: "Dr. R. Ndung'u",
+        },
+        mid_morning: {
+          date_name: "wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None",
+        },
+      },
+      Thur: {
+        morning: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "SCS 205",
+          time: "1000hrs-1300hrs",
+          venue: "DH3A",
+          img: lec1,
+          lec: "Knight",
+        },
+        evening: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: lec2,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None",
+        },
+      },
+      Fri: {
+        morning: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "SCS 203",
+          time: "1300hrs-1600hrs",
+          venue: "MLH2",
+          img: lec2,
+          lec: "Mutembei",
+        },
+        late_evening: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None",
+        },
+      },
     },
-    evening: {
-      date_name: "Mon",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "1300hrs-1600hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
+    Y3S2: {
+      Mon: {
+        morning: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+      },
+      Tue: {
+        morning: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: lec2,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "SCS 301",
+          time: "1600hrs-1900hrs",
+          venue: "GF2",
+          img: dr_Njeri,
+          lec: "Nekesa",
+        },
+      },
+      Wed: {
+        morning: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "SIT 304",
+          time: "0700hrs-1000hrs",
+          venue: "GF4 Lab",
+          img: dr_Njeri,
+          lec: "Juliet",
+        },
+        mid_morning: {
+          date_name: "wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None",
+        },
+      },
+      Thur: {
+        morning: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "SCS 302",
+          time: "0700hrs-1000hrs",
+          venue: "GF3",
+          img: lec1,
+          lec: "S.Karanja",
+        },
+        mid_morning: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "SCS 303",
+          time: "1300hrs-1600hrs",
+          venue: "GF3",
+          img: lec2,
+          lec: "Knight",
+        },
+        late_evening: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "SIT 306",
+          time: "1600hrs-1900hrs",
+          venue: "F1.2",
+          img: lec4,
+          lec: "Agina",
+        },
+      },
+      Fri: {
+        morning: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "SCIT 305",
+          time: "0700hrs-1000hrs",
+          venue: "F2.2",
+          img: lec1,
+          lec: "C.Kiarie",
+        },
+        mid_morning: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: lec2,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None",
+        },
+      },
     },
-  },
-  {
-    morning: {
-      date_name: "Tue",
-      date_number: "27/4/2023",
-      unit: "Free Lesson",
-      time: "0700hrs-1000hrs",
-      venue: "",
-      img: dr_Njeri,
-      lec: "Dr.Njeri",
-    },
-    mid_morning: {
-      date_name: "Tue",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_patel,
-      lec: "Dr.Patel Sighn",
-    },
-    evening: {
-      date_name: "Tue",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-  },
-  {
-    morning: {
-      date_name: "Wed",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_patel,
-      lec: "Dr.Patel Sighn",
-    },
-    mid_morning: {
-      date_name: "Wed",
-      date_number: "27/3/2023",
-      unit: "AMM 103",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-    evening: {
-      date_name: "Wed",
-      date_number: "27/3/2023",
-      unit: "Free Lesson",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-  },
-  {
-    morning: {
-      date_name: "Thur",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-    mid_morning: {
-      date_name: "Thur",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-    evening: {
-      date_name: "Thur",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-  },
-  {
-    morning: {
-      date_name: "Fri",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-    mid_morning: {
-      date_name: "Fri",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-    evening: {
-      date_name: "Fri",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-  },
-  {
-    morning: {
-      date_name: "Sat",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-    mid_morning: {
-      date_name: "Sat",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-    evening: {
-      date_name: "Sat",
-      date_number: "27/3/2023",
-      unit: "AMM 102",
-      time: "0700hrs-1000hrs",
-      venue: "Tution Block",
-      img: dr_Njeri,
-      lec: "Dr.Patel Sighn",
-    },
-  },
-];
-
-const getDayTime = () => {
-  const currentHour = new Date().getHours();
-
-  if (currentHour < 10) {
-    return "morning";
-  } else if (currentHour < 13) {
-    return "mid_morning";
-  } else {
-    return "evening";
+    Y4S2: {
+      Mon: {
+        morning: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: lec3,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+      },
+      Tue: {
+        morning: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "SCS 422",
+          time: "1000hrs-1300hrs",
+          venue: "GF4",
+          img: lec4,
+          lec: "Dr. G. Mariga",
+        },
+        evening: {
+          date_name: "Tue",
+          course_name: "BSc IT",
+          unit: "SIT 408",
+          time: "1300hrs-1600hrs",
+          venue: "DH3B",
+          img: lec2,
+          lec: "S.Kigotho",
+        },
+        late_evening: {
+          date_name: "Mon",
+          course_name: "BSc IT",
+          unit: "SIT 406",
+          time: "1600hrs-1900hrs",
+          venue: "F2.4",
+          img: dr_Njeri,
+          lec: "Agina",
+        },
+      },
+      Wed: {
+        morning: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: dr_Njeri,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: lec2,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Wed",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None"
+        },
+      },
+      Thur: {
+        morning: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "SCS 414",
+          time: "0700hrs-1000hrs",
+          venue: "F3.1",
+          img: lec1,
+          lec: "Knight",
+        },
+        mid_morning: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "SIT 405",
+          time: "1000hrs-1300hrs",
+          venue: "F3.3",
+          img: lec1,
+          lec: "P.Bitok",
+        },
+        evening: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "SIT 405",
+          time: "1300hrs-1600hrs",
+          venue: "F3.3",
+          img: lec2,
+          lec: "Dr. J. Njuki",
+        },
+        late_evening: {
+          date_name: "Thur",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None",
+        },
+      },
+      Fri: {
+        morning: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "0700hrs-1000hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        mid_morning: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1000hrs-1300hrs",
+          venue: "No Venue",
+          img: lec1,
+          lec: "None",
+        },
+        evening: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1300hrs-1600hrs",
+          venue: "No Venue",
+          img: lec2,
+          lec: "None",
+        },
+        late_evening: {
+          date_name: "Fri",
+          course_name: "BSc IT",
+          unit: "No Unit",
+          time: "1600hrs-1900hrs",
+          venue: "No Venue",
+          img: lec4,
+          lec: "None",
+        },
+      },
+    }
   }
-};
+]
 
-const timesOfDay = ["morning", "mid_morning", "evening"];
+
 
 const Student = () => {
-  const [selectedItems, setSelectedItems] = useState(
-    Array(table.length).fill(null)
-  );
-  const [currentTimeOfDay, setCurrentTimeOfDay] = useState(getDayTime());
+  const [selectedCourse, setSelectedCourse] = useState("BSc IT");
+  const [selectedYear, setSelectedYear] = useState("Y1S2");
+  const [showNotification, setShowNotification] = useState(false);
+  // const [currentTimeOfDay, setCurrentTimeOfDay] = useState("");
+  const [selectedTimetable, setSelectedTimetable] = useState([]);
 
-  const [show, setShow] = useState(false)
-  const [close, setClose] = useState(false)
+  const [currentTimeOfDay, setCurrentTimeOfDay] = useState<string>("");
 
-  const handleItemClick = (index: any, timeOfDay: string) => {
-    const newSelectedItems = [...selectedItems];
-    newSelectedItems[index] = timeOfDay;
-    setSelectedItems(newSelectedItems);
+
+  const timesOfDay = ['morning', 'mid_morning', 'evening', 'late_evening'];
+
+  const [selectedItems, setSelectedItems] = useState<Array<string | null>>(Array(timesOfDay.length).fill(null));
+
+  const courseOptions = {
+    "BSc IT": Bsc_IT,
+    "BSc SE": Bsc_SE,
+    "BBIT": BBIT,
+    "BSc CS": Bsc_CS
+  };
+  const yearOptions = ["Y1S2", "Y2S2", "Y3S2", "Y4S2"];
+
+
+  function getBScITContent(year) {
+    // Assuming year is a string like 'Y1S2', 'Y2S2', etc.
+    const courses = Bsc_IT.find(course => course[year]);
+
+    if (!courses) {
+      return null; // Or handle the case where the year is not found
+    }
+
+    return courses[year];
+  }
+
+  // Example usage
+  // Assuming the user has selected this year
+  const content = getBScITContent(selectedYear);
+  console.log(content);
+
+
+
+  const handleUpdateTimeOfDay = () => {
+    const currentHour = new Date().getHours();
+    let timeOfDay;
+
+    if (currentHour < 10) {
+      timeOfDay = "morning";
+    } else if (currentHour < 13) {
+      timeOfDay = "mid_morning";
+    } else if (currentHour < 16) {
+      timeOfDay = "evening";
+    } else {
+      timeOfDay = "late_evening";
+    }
+
     setCurrentTimeOfDay(timeOfDay);
   };
 
-  const handleUpdateTimeOfDay = () => {
-    setCurrentTimeOfDay(getDayTime());
-  };
-
   useEffect(() => {
-    // Update the time of day periodically (e.g., every minute)
     const interval = setInterval(handleUpdateTimeOfDay, 60000);
+    const selectedTimetable = setSelectedTimetable(getBScITContent(selectedYear));
 
-    // Clear the interval when the component unmounts
+    console.log(selectedTimetable)
+
+
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedCourse, selectedYear]);
 
-  const searchOptions = [
-    { value: "Math", label: "math" },
-    { value: "English", label: "english" },
-    { value: "Science", label: "science" },
-    { value: "Insha", label: "insha" },
-  ];
-  const handleChange = (selectedOptions: any) => {
-    console.log("handleChange", selectedOptions);
-  };
-  const customStyles = {
-    control: (provided: any, state: any) => ({
-      ...provided,
-      borderRadius: 20,
-      backgroundColor: state.isFocused ? "#e0f7fa" : "#e0f7fa",
-    }),
+  const getCurrentDay = () => {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',];
+    const currentDate = new Date();
+    const currentDayIndex = currentDate.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+    return days[currentDayIndex];
   };
 
-  // 
+  const getCurrentTime = () => {
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+    const currentMinutes = currentDate.getMinutes();
+    const currentTime = `${currentHour}:${currentMinutes}`;
+    return currentTime;
+  };
+
+
+  const handleItemClick = (index: number, timeOfDay: string) => {
+    const currentDay = getCurrentDay();
+    const currentTime = getCurrentTime();
+
+    if (!selectedTimetable[currentDay]) {
+      return; // Return early if there are no timetable items for the current day
+    }
+
+    const currentItem = selectedTimetable[currentDay][currentTime];
+    const newSelectedItems = timesOfDay.map(() => null); // Initialize with null values
+    newSelectedItems[index] = currentItem ? currentItem : null;
+    setSelectedItems(newSelectedItems);
+    setCurrentTimeOfDay(timeOfDay);
+  };
+  // const handleItemClick = (time) => {
+  //   setCurrentTimeOfDay(time);
+  // };
+
+
 
   return (
-    <main className="flex flex-col justify-center place-items-center items-center mx-auto w-full overflow-hidden">
-      <nav className="py-6 flex justify-between place-items-center items-center mx-auto relative  w-[100vw] shadow-lg">
+    <main className="flex flex-col justify-center place-items-center items-center mx-auto w-full ">
+      <nav className="py-6 flex justify-between place-items-center  items-center mx-auto relative  w-[100vw] shadow-lg">
         <div className="flex items-center w-[80%] mx-auto justify-around">
-        <Link
-            className="bg-[#313131] p-1 rounded-full flex justify-center items-center"
-            href="/"
-          >
+          <Link className="bg-[#313131] p-1 rounded-full flex justify-center items-center" href="/">
             <div className="flex items-center">
-            <IoMdHome className="relative w-5 h-5 ml-2 mr-1 text-slate-300" />
-            <span className=" text-base text-slate-300">Home</span>
+              <IoMdHome className="relative w-5 h-5 ml-2 mr-1 text-slate-300" />
+              <span className=" text-base text-slate-300">Home</span>
             </div>
           </Link>
-          <div className="flex bg-[#313131]  items-center rounded-full">
-            <BsSearch className="w-4 ml-3 mr-1 h-4 text-slate-300" />
-            <input
-              type="text"
-              placeholder="Search Classes here"
-              className="p-1 bg-transparent outline-none w-[80%] rounded-r-full"
-            />
+
+          <div className="flex items-center">
+            <select
+              value={selectedCourse}
+              onChange={(e) => setSelectedCourse(e.target.value)}
+              className="border border-gray-500 text-black rounded-md px-2 py-1 mr-2"
+            >
+              {Object.keys(courseOptions).map((course) => (
+                <option key={course} value={course}>
+                  {course}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              className="border border-gray-500 text-black rounded-md px-3 py-1"
+            >
+              {yearOptions.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
-            <button className="bg-[#313131]  p-1 rounded-full w-7 h-7 flex justify-center items-center relative" onClick={() => setShow(!show)} >
+            <button
+              className="bg-[#313131]  p-1 rounded-full w-7 h-7 flex justify-center items-center relative"
+              onClick={() => setShowNotification(!showNotification)}
+            >
               <IoMdNotificationsOutline className="relative w-6 h-6 text-slate-300" />
-              {show ? <div className="absolute bg-green-400 w-3 h-3 rounded-full top-[-3px] ml-4"></div> : null}
-              
+              {showNotification ? (
+                <div className="absolute bg-green-400 w-3 h-3 rounded-full top-[-3px] ml-4"></div>
+              ) : null}
             </button>
-            { show ? null : <Notification /> }
-          </div>
-          {/* <Select
-            options={searchOptions}
-            className="rounded-full "
-            placeholder="School of"
-            onChange={handleChange}
-            styles={customStyles}
-          /> */}
-          <div>
-            <button className="bg-[#313131] p-1 rounded-full flex justify-center items-center">
-              <AiOutlinePrinter className="relative w-6 h-6 ml-3 mr-1 text-slate-300" />
-              <span className=" mr-1 text-base text-slate-300">
-                Generate Report
-              </span>
-            </button>
+            {showNotification ? null : <Notification />}
           </div>
           <div>
             <button className="bg-[#313131] p-1 rounded-full flex justify-center items-center">
@@ -302,69 +952,62 @@ const Student = () => {
         </div>
       </nav>
       <section className="grid my-6 gap-x-0 items-center place-items-center justify-center overflow-x-hidden mx-auto w-full grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
-        {table.map((item, index) => (
-          <div
-            key={index}
-            className="flex flex-col justify-center mx-auto place-items-center items-center bg-stone-800 rounded-lg w-[80%]"
-          >
-            <div className="bg-stone-700 flex justify-between mx-auto w-full p-3 rounded-t-lg"> 
-              <h3 className="font-semibold text-lg ">
-                {item[currentTimeOfDay].date_name}
-              </h3>
-              <h4 className="text-base text-slate-200">
-                {item[currentTimeOfDay].date_number}
-              </h4>
-            </div>
-            <div className="flex flex-col justify-between mx-auto w-full p-3">
-              <div className="flex items-center my-2">
-                <label htmlFor="" className="text-slate-200 text-base">
-                  Unit:
-                </label>
-                <span className="font-bold text-base ml-3">
-                  {item[currentTimeOfDay].unit}
-                </span>
+        {selectedTimetable && Object.keys(selectedTimetable).map((day, dayIndex) => (
+          <div key={dayIndex} className="flex flex-col justify-center mx-auto place-items-center items-center bg-stone-800 rounded-lg w-[80%]">
+            <h2 className="text-xl font-bold">{day}</h2>
+            {selectedTimetable[day][currentTimeOfDay] && (
+              <div className="flex flex-col justify-center mx-auto w-full p-3">
+                <div className="flex items-center my-2">
+                  <label htmlFor="" className="text-slate-200 text-base">
+                    Unit:
+                  </label>
+                  <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].unit}</span>
+                </div>
+                <div className="flex items-center my-2">
+                  <label htmlFor="" className="text-slate-200 text-base">
+                    Time:
+                  </label>
+                  <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].time}</span>
+                </div>
+                <div className="flex items-center my-2">
+                  <label htmlFor="" className="text-slate-200 text-base">
+                    Venue:
+                  </label>
+                  <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].venue}</span>
+                </div>
+                <div className="flex items-center my-2">
+                  <label htmlFor="" className="text-slate-200 text-base">
+                    Lecturer:
+                  </label>
+                  <span className="font-bold text-base ml-3">{selectedTimetable[day][currentTimeOfDay].lec}</span>
+                </div>
+                <div className="flex mx-auto w-full py-3 items-center">
+                  <Image
+                    alt={selectedTimetable[day][currentTimeOfDay].lec}
+                    src={selectedTimetable[day][currentTimeOfDay].img}
+                    className="w-8 h-7 object-cover rounded-full"
+                  />
+                  <span className="font-semibold text-sm ml-3">
+                    {selectedTimetable[day][currentTimeOfDay].lec}
+                  </span>
+                </div>
+                <div className="flex justify-center mx-auto w-full p-3 items-center">
+                  {timesOfDay.map((time, index) => (
+                    <div
+                      key={time}
+                      onClick={() => handleItemClick(index, time)}
+                      className={`bg-slate-100 w-3 h-3 rounded-full mx-1 cursor-pointer ${currentTimeOfDay === time ? "opacity-100" : "opacity-50"
+                        }`}
+                    ></div>
+                  ))}
+                </div>
               </div>
-              <div className="flex items-center my-2">
-                <label htmlFor="" className="text-slate-200 text-base">
-                  Time:
-                </label>
-                <span className="font-bold text-base ml-3">
-                  {item[currentTimeOfDay].time}
-                </span>
-              </div>
-              <div className="flex items-center my-2">
-                <label htmlFor="" className="text-slate-200 text-base">
-                  Venue:
-                </label>
-                <span className="font-bold text-base ml-3">
-                  {item[currentTimeOfDay].venue}
-                </span>
-              </div>
-            </div>
-            <div className="flex mx-auto w-full p-3 items-center">
-              <Image
-                alt={item[currentTimeOfDay].lec}
-                src={item[currentTimeOfDay].img}
-                className="w-8 h-7 object-cover rounded-full"
-              />
-              <span className="font-semibold text-sm ml-3">
-                {item[currentTimeOfDay].lec}
-              </span>
-            </div>
-            <div className="flex justify-center mx-auto w-full p-3 items-center">
-              {timesOfDay.map((time) => (
-                <div
-                  key={time}
-                  onClick={() => handleItemClick(index, time)}
-                  className={`bg-slate-100 w-3 h-3 rounded-full mx-1 cursor-pointer ${
-                    currentTimeOfDay === time ? "opacity-100" : "opacity-50"
-                  }`}
-                ></div>
-              ))}
-            </div>
+            )}
           </div>
         ))}
       </section>
+
+
     </main>
   );
 };

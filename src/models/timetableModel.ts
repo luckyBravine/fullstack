@@ -13,22 +13,21 @@ interface PdfDetails {
 const PdfDetailsSchema = new mongoose.Schema({
   size: {
     type: Number,
-    default: false,
+    default: true,
   },
   type: {
     type: String,
-    default: false,
+    default: true,
   },
   name: {
     type: String,
-    default: false,
+    default: true,
   },
   lastModified: {
     type: String,
-    default: false,
+    default: true,
   },
 });
-
 // Define a Mongoose model for the PDF details
 const TimetableModel = mongoose.models.PdfDetails || mongoose.model("PdfDetails", PdfDetailsSchema);
 
