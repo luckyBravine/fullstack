@@ -35,7 +35,7 @@ export default function Report() {
               p: 2,
               display: "flex",
               flexDirection: "column",
-              height: 377,
+              height: 565,
             }}
           >
             <Chart />

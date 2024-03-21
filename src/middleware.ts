@@ -1,60 +1,67 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
-import jwt from 'jsonwebtoken';
- 
+
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import jwt, { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
+
+let hasRedirected = false;
 
 export function middleware(request: NextRequest) {
-  // const path = request.nextUrl.pathname
+  const path = request.nextUrl.pathname;
+  const isPublicPath = path === '/login' || path === '/signup' || path === '/';
 
-  // const isPublicPath = path === '/login' || path === '/signup' || path === '/'
+  const token = request.cookies.get('token')?.value || '';
 
-  // const token = request.cookies.get("token")?.value || "";
+  console.log('Token:', token);
 
-  // if(isPublicPath && token){
-  //   return NextResponse.redirect(new URL('/', request.nextUrl))
-  //   console.log("hello")
-  // } 
-  
-  // if(!isPublicPath && !token){
-  //   return NextResponse.redirect(new URL('/', request.nextUrl))
-  //   console.log("hello 1")
-  // } 
-  // try {
-  //   console.log("welcome")
-  //   const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET!) as { role: string };
-  //   switch (decodedToken.role.toUpperCase()) {
-  //     case 'STUDENT':
-  //       if (!request.nextUrl.pathname.startsWith('/moderator')) {
-  //         return NextResponse.redirect(new URL('/student', request.url));
-  //         console.log("student")
-  //       }
-  //       break;
-  //     case 'ADMIN':
-  //       if (
-  //         !request.nextUrl.pathname.startsWith('/student')
-  //       ) {
-  //         return NextResponse.redirect(new URL('/moderator', request.url));
-  //         console.log("admin")
-  //       }
-  //       break;
-  //     default:
-  //       return NextResponse.redirect(new URL('/', request.url));
-  //       console.log("home")
-  //   }
-  // } catch (error: any) {
-  //   // Handle invalid or expired token
-  //   return NextResponse.redirect(new URL('/', request.url));
-  //   console.log("there is na error", error)
-  // }
+  if (hasRedirected) {
+    console.log('Already redirected, skipping');
+    return NextResponse.next();
+  }
+
+  if (!token) {
+    console.log('No token found, redirecting to /home');
+    hasRedirected = true;
+    return NextResponse.redirect(new URL('/', request.nextUrl));
+  }
+
+  try {
+    console.log('Decoding token');
+    const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET!) as { role: string };
+    switch (decodedToken.role.toUpperCase()) {
+      case 'STUDENT':
+        if (!request.nextUrl.pathname.startsWith('/Admin')) {
+          console.log('Redirecting to /Student');
+          hasRedirected = true;
+          return NextResponse.redirect(new URL('/Student', request.url));
+        }
+        break;
+      case 'ADMIN':
+        if (!request.nextUrl.pathname.startsWith('/Student')) {
+          console.log('Redirecting to /Admin');
+          hasRedirected = true;
+          return NextResponse.redirect(new URL('/Admin', request.url));
+        }
+        break;
+      default:
+        console.log('Redirecting to /');
+        hasRedirected = true;
+        return NextResponse.redirect(new URL('/', request.url));
+    }
+  } catch (error: any) {
+    if (error instanceof TokenExpiredError) {
+      console.log('Token expired');
+    } else if (error instanceof JsonWebTokenError) {
+      console.log('Invalid token');
+    } else {
+      console.log('Unknown error:', error);
+    }
+    console.log('Redirecting to /login');
+    hasRedirected = true;
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
 }
- 
+
 export const config = {
-  matcher: [
-    '/',
-    '/login',
-    '/signup',
-    '/profile',
-    '/student', 
-    '/moderator'
-]
-}
+  matcher: ['/', '/login', '/signup', '/Student', '/Admin'],
+};
+

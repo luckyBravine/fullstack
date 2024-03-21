@@ -41,15 +41,6 @@ export async function POST(request: NextRequest) {
         //create token
         const token = jwt.sign(tokenData, process.env.JTW_TOKEN_SECRET!, { expiresIn: "1d" })
 
-        // const roleCheck = jwt({ token, user }) {
-        //     if(user) token.role = user.role;
-        //     return token;
-        //   },
-        // async session({ session, token }) {
-        //     if (session?.user) session.user.role = token.role;
-        //     return session;
-        //   },
-
         const response = NextResponse.json({
             message: "Login successfully",
             success: true,

@@ -1,34 +1,72 @@
 "use client";
 import Image from "next/image";
 import { registerLicense } from "@syncfusion/ej2-base";
-import { useState } from "react";
 import Link from "next/link";
 import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import sheduler from "../../public/sheduler.jpg";
 import admin from "../../public/admin.jpg";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 registerLicense(
   "Ngo9BigBOggjHTQxAR8/V1NHaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdgWH5feXRVRGFeWE1yV0M="
 );
 
 export default function Home() {
+  const [studentCount, setStudentCount] = useState(0);
+  const [lecturerCount, setLecturerCount] = useState(0);
+  const [pdfCount, setPdfCount] = useState(0);
+
+  const fetchPdfCount = async () => {
+    try {
+      const res = await axios.get('/api/users/pdfCount');
+      setPdfCount(res.data.pdfCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchStudentCount = async () => {
+    try {
+      const res = await axios.get('/api/users/stdCount');
+      setStudentCount(res.data.studentCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchLecturerCount = async () => {
+    try {
+      const res = await axios.get('/api/users/lecCount');
+      setLecturerCount(res.data.lecturerCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+
+
+  useEffect(() => {
+    fetchPdfCount();
+    fetchStudentCount();
+    fetchLecturerCount();
+  }, []);
   return (
-    <div className="flex flex-col min-h-screen bg-stone-200">
+    <div className="flex flex-col min-h-screen bg-[#D0DCD0]">
       <main className="w-full relative flex flex-col mx-auto overflow-x-hidden justify-center">
-        <nav className="flex justify-around items-center mx-auto p-4 w-[100%] bg-white">
+        <nav className="flex justify-around items-center mx-auto p-4 w-[100%] bg-[#50765F]">
           <header className="text-lg font-bold text-black font-poppins">CTMS</header>
           <div className="flex justify-between w-[40%]">
             <Link
               href="/login"
-              className="w-[200px] rounded-full p-2 text-black flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 hover:bg-blue-600 hover:text-white"
+              className="w-[200px] rounded-full p-2 text-black flex justify-center mx-auto items-center place-items-center my-2 border border-[#D0DCD0] hover:bg-[#D0DCD0] hover:text-black"
             >
               Login
             </Link>
             <Link
               href="/signup"
-              className="w-[200px] rounded-full p-2 flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 bg-blue-600 text-white hover:bg-white hover:text-black"
+              className="w-[200px] rounded-full p-2 flex justify-center mx-auto items-center place-items-center my-2 bg-blue-600 text-white hover:bg-white hover:text-black"
             >
-              Register 
+              Register
             </Link>
           </div>
         </nav>
@@ -64,8 +102,8 @@ export default function Home() {
                   </p>
                 </div>
                 <Link
-                  href="/Admin"
-                  className="w-[90%] rounded-full p-2 flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 hover:bg-blue-600 hover:text-white"
+                  href="/Student"
+                  className="w-[90%] rounded-full p-2 flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 text-black hover:bg-blue-600 hover:text-white"
                 >
                   Take A Look <HiOutlineArrowLongRight className="ml-2" />
                 </Link>
@@ -86,7 +124,7 @@ export default function Home() {
                 </div>
                 <Link
                   href="/Admin"
-                  className="w-[90%] rounded-full p-2  flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 hover:bg-blue-600 hover:text-white"
+                  className="w-[90%] rounded-full p-2  flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 hover:bg-blue-600 text-black hover:text-white"
                 >
                   Get Verified <HiOutlineArrowLongRight className="ml-2" />
                 </Link>
@@ -97,21 +135,21 @@ export default function Home() {
       </main>
       <section className="bg-white h-20 rounded p-6 flex fixed left-0 right-0 mx-auto justify-evenly w-[80%] bottom-0 ">
         <div className="flex">
-          <span className="text-4xl text-blue-400 mr-2">10</span>
+          <span className="text-4xl text-blue-400 mr-2">{pdfCount}</span>
           <h3 className="text-sm text-stone-600 font-semibold font-poppins">
             Learning <br /> Institutions
           </h3>
         </div>
         <div className="h-[80%] flex justify-center w-[2px] bg-slate-400"></div>
         <div className="flex">
-          <span className="text-4xl text-blue-400 mr-2">1000</span>
+          <span className="text-4xl text-blue-400 mr-2">{studentCount}</span>
           <h3 className="text-sm text-stone-600 font-semibold font-poppins">
             Learning <br /> Students
           </h3>
         </div>
         <div className="h-[80%] flex justify-center w-[2px] bg-slate-400"></div>
         <div className="flex">
-          <span className="text-4xl text-blue-400 mr-2">60</span>
+          <span className="text-4xl text-blue-400 mr-2">{lecturerCount}</span>
           <h3 className="text-sm text-stone-600 font-semibold font-poppins">
             Administrative <br /> Moderators
           </h3>

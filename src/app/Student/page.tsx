@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { IoMdHome, IoMdNotificationsOutline } from "react-icons/io";
-import { AiOutlinePrinter } from "react-icons/ai";
 import { IoIosLogOut } from "react-icons/io";
 import Notification from "./Components/Notification/Notification";
 import Link from "next/link";
@@ -15,6 +14,10 @@ import lec2 from "../../../public/lec2.webp";
 import lec3 from "../../../public/lec3.webp";
 import lec4 from "../../../public/lec4.webp";
 import Image from "next/image";
+import axios from "axios";
+import toast from "react-hot-toast";
+import {useRouter} from "next/navigation";
+
 const Bsc_IT = [
   {
     Y1S2: {
@@ -791,13 +794,14 @@ const Bsc_IT = [
 
 
 const Student = () => {
+  const router = useRouter()
   const [selectedCourse, setSelectedCourse] = useState("BSc IT");
   const [selectedYear, setSelectedYear] = useState("Y1S2");
   const [showNotification, setShowNotification] = useState(false);
   // const [currentTimeOfDay, setCurrentTimeOfDay] = useState("");
   const [selectedTimetable, setSelectedTimetable] = useState([]);
-
   const [currentTimeOfDay, setCurrentTimeOfDay] = useState<string>("");
+  const [registrationNumber, setRegistrationNumber] = useState('');
 
 
   const timesOfDay = ['morning', 'mid_morning', 'evening', 'late_evening'];
@@ -818,16 +822,13 @@ const Student = () => {
     const courses = Bsc_IT.find(course => course[year]);
 
     if (!courses) {
-      return null; // Or handle the case where the year is not found
+      return null; 
     }
 
     return courses[year];
   }
 
-  // Example usage
-  // Assuming the user has selected this year
   const content = getBScITContent(selectedYear);
-  console.log(content);
 
 
 
@@ -852,9 +853,16 @@ const Student = () => {
     const interval = setInterval(handleUpdateTimeOfDay, 60000);
     const selectedTimetable = setSelectedTimetable(getBScITContent(selectedYear));
 
-    console.log(selectedTimetable)
+    const getUserDetails = async () => {
+      try {
+          const res = await axios.get('/api/users/me');
+          setRegistrationNumber(res.data.data.registrationNumber);
+      } catch (error) {
+          console.error(error);
+      }
+  };
 
-
+  getUserDetails();
     return () => clearInterval(interval);
   }, [selectedCourse, selectedYear]);
 
@@ -879,15 +887,36 @@ const Student = () => {
     const currentTime = getCurrentTime();
 
     if (!selectedTimetable[currentDay]) {
-      return; // Return early if there are no timetable items for the current day
+      return; 
     }
 
     const currentItem = selectedTimetable[currentDay][currentTime];
-    const newSelectedItems = timesOfDay.map(() => null); // Initialize with null values
+    const newSelectedItems = timesOfDay.map(() => null); 
     newSelectedItems[index] = currentItem ? currentItem : null;
     setSelectedItems(newSelectedItems);
     setCurrentTimeOfDay(timeOfDay);
   };
+
+  const logout = async () => {
+    try {
+      await axios.get('/api/users/logout')
+      toast.success('Logout successful')
+      router.push('/login')
+    } catch (error: any) {
+      console.log(error.message);
+      toast.error(error.message)
+    }
+  }
+
+//   const getUserDetails = async () => {
+//     try {
+//         const res = await axios.get('/api/users/me')
+//         console.log(res.data);
+//         setData(res.data.data.registrationNumber);
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
 
 
 
@@ -939,19 +968,19 @@ const Student = () => {
             </button>
             {showNotification ? null : <Notification />}
           </div>
-          
+
           <div>
             <button className="bg-[#313131] border border-gray-700 p-1 rounded-lg flex justify-center items-center">
               <BsFileEarmarkText className="relative text-lg ml-1 mr-1 text-slate-300" />
               <span className=" mr-1 text-base text-slate-300">
-                SC211/1088/2019
+              {registrationNumber}
               </span>
             </button>
           </div>
           <div>
-            <button className="bg-[#313131] border border-gray-700 p-1 rounded-lg flex justify-center items-center">
-              <IoIosLogOut className="relative text-lg ml-1 mr-1 text-slate-300" />
-              <span className=" mr-1 text-base text-slate-300">
+            <button className="bg-red-500 border border-red-500 p-1 rounded-lg flex justify-center items-center" onClick={logout}>
+              <IoIosLogOut className="relative text-lg ml-1 mr-1 text-slate-100" />
+              <span className=" mr-1 text-base text-slate-100">
                 LogOut
               </span>
             </button>

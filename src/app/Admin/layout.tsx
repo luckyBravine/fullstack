@@ -1,30 +1,23 @@
 "use client";
 import { Inter } from "next/font/google";
-import Link from "next/link";
-import { AiOutlinePrinter } from "react-icons/ai";
-import { BsTable, BsKanbanFill } from "react-icons/bs";
-import { PiNotePencilDuotone } from "react-icons/pi";
-import { BsFileEarmarkText } from "react-icons/bs";
-import { IoMdHome } from "react-icons/io";
 import Box from "@mui/material/Box";
 import { mainListItems } from "./listItems";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Toaster } from "react-hot-toast";
+import LogoutIcon from '@mui/icons-material/Logout';
+import axios from "axios";
+import toast from "react-hot-toast";
+import {useRouter} from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 const drawerWidth: number = 240;
@@ -83,6 +76,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(true);
+  const router = useRouter()
   
   useEffect(() => {
     setOpen((prevOpen) => !prevOpen);
@@ -91,8 +85,19 @@ export default function AdminLayout({
   const toggleDrawer = () => {
     setOpen((prevOpen) => !prevOpen);
   };
+  const logout = async () => {
+    try {
+      await axios.get('/api/users/logout')
+      toast.success('Logout successful')
+      router.push('/login')
+    } catch (error: any) {
+      console.log(error.message);
+      toast.error(error.message)
+    }
+  }
 
   return (
+    
     <>
       <body className={`inter.className flex mx-auto w-full bg-white`}>
         <Box sx={{ display: "flex" }}>
@@ -124,11 +129,11 @@ export default function AdminLayout({
               >
                 Dashboard
               </Typography>
-              <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+              <IconButton color="inherit" onClick={logout} >
+              
+                <LogoutIcon  />
+              
+            </IconButton>
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>

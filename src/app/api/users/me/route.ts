@@ -13,7 +13,10 @@ export async function GET(request: NextRequest){
 
         return NextResponse.json({
             message: 'User Found',
-            data: user,
+            data: {
+                _id: user._id,
+                registrationNumber: user.registrationNumber,
+            },
         })
     }catch(error: any){
         return NextResponse.json({error: error.message}, {status: 400})

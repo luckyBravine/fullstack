@@ -2,7 +2,7 @@
 import { IoClose } from "react-icons/io5";
 import dr_patel from "../../../../../public/dr_patel.jpg";
 import dr_Njeri from "../../../../../public/dr_Njeri.jpg";
-// import React, { useState, useEffect } from "react";
+
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import Image from "next/image";

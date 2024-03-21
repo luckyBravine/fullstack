@@ -9,7 +9,11 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
-import Chart from "./Graph/page";
+import ChartsOverviewDemo from "./Graph/page";
+import StudentCount from './StudentCount';
+import TimetableCount from "./TimetableCount";
+import Aparol from "./Aparol";
+import LecturerCount from "./LecturerCount";
 
 const defaultTheme = createTheme();
 
@@ -17,7 +21,7 @@ export default function Dashboard() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: "flex"}} className="w-full" >
+      <Box sx={{ display: "flex"}} className="w-full bg-white" >
         <CssBaseline />        
         <Box
           component="main"
@@ -35,16 +39,16 @@ export default function Dashboard() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
+              <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: 120,
                   }}
                 >
-                  <Chart />
+                  <TimetableCount />
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -54,16 +58,26 @@ export default function Dashboard() {
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: 120,
                   }}
                 >
-                  {/* <Deposits /> */}
+                  <LecturerCount />
                 </Paper>
               </Grid>
               {/* Recent Orders */}
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column", height: 120, }}>
+                  <StudentCount  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={4} lg={3}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column", height: 120, }}>
+                  <Aparol  />
+                </Paper>
+              </Grid>
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  {/* <Orders /> */}
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column", height: 400, }}>
+                  <ChartsOverviewDemo />
                 </Paper>
               </Grid>
             </Grid>

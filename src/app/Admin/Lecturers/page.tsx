@@ -349,7 +349,7 @@ export default function FullFeaturedCrudGrid() {
           color: "text.primary",
         },
       }}
-      className="bg-white flex-col justify-center pt-24 w-full mx-auto"
+      className="bg-white flex-col justify-center pt-24 w-full h-full mx-auto"
     >
       <Header category="Page" title="Lecturers" />
       <DataGrid

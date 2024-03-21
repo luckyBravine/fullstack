@@ -4,6 +4,8 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { MdEmail } from "react-icons/md";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -49,35 +51,39 @@ export default function LoginPage() {
   }, [user]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <h1>{loading ? "Processing" : "Login"}</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-600">
+     <h1 className="text-black font-bold text-5xl mb-5">{loading ? "Processing" : "Sign in to CTMS"}</h1>
       <hr />
 
-      <label htmlFor="email">email</label>
+      <div className="flex items-center  border border-gray-300 rounded-full bg-white w-[300px] px-4 mb-4">
+        <MdEmail className="text-black  w-5 h-5 ml-1 " />
       <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+        className="p-2 rounded-lg focus:outline-none focus:border-gray-600 text-black"
         id="email"
         type="text"
         value={user.email}
         onChange={(e) => setUser({ ...user, email: e.target.value })}
-        placeholder="email"
+        placeholder="Email"
       />
-      <label htmlFor="password">password</label>
+      </div>
+      <div className="flex items-center  border border-gray-300 rounded-full bg-white w-[300px] px-4 mb-4">
+        <RiLockPasswordFill className="text-black  w-5 h-5 ml-1 " />
       <input
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
+        className="p-2 rounded-lg focus:outline-none focus:border-gray-600 text-black"
         id="password"
         type="password"
         value={user.password}
         onChange={(e) => setUser({ ...user, password: e.target.value })}
-        placeholder="password"
+        placeholder="Password"
       />
+      </div>
       <button
         onClick={onLogin}
-        className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
+        className="p-2 border border-gray-300 rounded-full w-[300px] mb-4 focus:outline-none focus:border-gray-600"
       >
         Login here
       </button>
-      <Link href="/signup">Visit Signup page</Link>
+      <Link href="/signup" className="font-semibold">Visit Signup page</Link>
     </div>
   );
 }
