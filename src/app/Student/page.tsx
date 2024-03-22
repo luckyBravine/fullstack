@@ -849,9 +849,41 @@ const Student = () => {
     setCurrentTimeOfDay(timeOfDay);
   };
 
+  function getCurrentDayLesson(_params) {
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+    const currentDate = new Date();
+    const currentDay = daysOfWeek[currentDate.getDay()];
+
+    let currentSchedule = null;
+    for (const year of Bsc_IT) {
+        for (const dayOfWeek in year) {
+            if (dayOfWeek === currentDay) {
+                currentSchedule = year[dayOfWeek];
+                break;
+            }
+        }
+        if (currentSchedule) {
+            break;
+        }
+    }
+
+    if (currentSchedule) {
+        const lesson = Object.values(currentSchedule).find(lesson => lesson.unit !== "No Unit");
+        if (lesson) {
+            const { img, unit, venue } = lesson;
+            return { img, unit, venue };
+        }
+    }
+
+    return "None";
+}
+
   useEffect(() => {
     const interval = setInterval(handleUpdateTimeOfDay, 60000);
     const selectedTimetable = setSelectedTimetable(getBScITContent(selectedYear));
+    const notify = getCurrentDayLesson(selectedTimetable)
+
+    console.log(notify)
 
     const getUserDetails = async () => {
       try {
@@ -908,15 +940,7 @@ const Student = () => {
     }
   }
 
-//   const getUserDetails = async () => {
-//     try {
-//         const res = await axios.get('/api/users/me')
-//         console.log(res.data);
-//         setData(res.data.data.registrationNumber);
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
+  
 
 
 

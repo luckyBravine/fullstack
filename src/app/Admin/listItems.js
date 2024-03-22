@@ -8,6 +8,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import Link from "next/link";
 
@@ -51,6 +52,14 @@ export const mainListItems = (
       </ListItemIcon>
       <Link href="/Admin/Timetable">
         <ListItemText primary="Timetables" />
+      </Link>
+    </ListItemButton>
+    <ListItemButton>
+      <ListItemIcon>
+        <NotificationsActiveIcon  />
+      </ListItemIcon>
+      <Link href="/Admin/Notifications">
+        <ListItemText primary="Notifications" />
       </Link>
     </ListItemButton>
   </React.Fragment>

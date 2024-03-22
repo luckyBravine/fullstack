@@ -23,7 +23,7 @@ export default function LoginPage() {
       console.log("API Response:", response.data);
       const role = response.data.role;
       console.log("Login success", response.data.role)
-      
+
       if (role === "ADMIN") {
         router.push("/Admin");
         toast.success("Welcome, Admin Login success");
@@ -52,30 +52,30 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-600">
-     <h1 className="text-black font-bold text-5xl mb-5">{loading ? "Processing" : "Sign in to CTMS"}</h1>
+      <h1 className="text-black font-bold text-5xl mb-5">{loading ? "Processing" : "Sign in to CTMS"}</h1>
       <hr />
 
       <div className="flex items-center  border border-gray-300 rounded-full bg-white w-[300px] px-4 mb-4">
         <MdEmail className="text-black  w-5 h-5 ml-1 " />
-      <input
-        className="p-2 rounded-lg focus:outline-none focus:border-gray-600 text-black"
-        id="email"
-        type="text"
-        value={user.email}
-        onChange={(e) => setUser({ ...user, email: e.target.value })}
-        placeholder="Email"
-      />
+        <input
+          className="p-2 rounded-lg focus:outline-none focus:border-gray-600 text-black"
+          id="email"
+          type="text"
+          value={user.email}
+          onChange={(e) => setUser({ ...user, email: e.target.value })}
+          placeholder="Email"
+        />
       </div>
       <div className="flex items-center  border border-gray-300 rounded-full bg-white w-[300px] px-4 mb-4">
         <RiLockPasswordFill className="text-black  w-5 h-5 ml-1 " />
-      <input
-        className="p-2 rounded-lg focus:outline-none focus:border-gray-600 text-black"
-        id="password"
-        type="password"
-        value={user.password}
-        onChange={(e) => setUser({ ...user, password: e.target.value })}
-        placeholder="Password"
-      />
+        <input
+          className="p-2 rounded-lg focus:outline-none focus:border-gray-600 text-black"
+          id="password"
+          type="password"
+          value={user.password}
+          onChange={(e) => setUser({ ...user, password: e.target.value })}
+          placeholder="Password"
+        />
       </div>
       <button
         onClick={onLogin}
