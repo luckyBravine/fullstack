@@ -1,44 +1,73 @@
 "use client";
 import { IoClose } from "react-icons/io5";
-import dr_patel from "../../../../../public/dr_patel.jpg";
-import dr_Njeri from "../../../../../public/dr_Njeri.jpg";
 
-import { RiDeleteBin6Line } from "react-icons/ri";
-
-import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { FaUser } from "react-icons/fa6";
 
 
 const Notification = () => {
   const [showNotification, setShowNotification] = useState(true);
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      name: "Dr. Patel Sighn",
-      message: "Let's meet at 2pm, venue F1,2.",
-      img: dr_Njeri,
-    },
-    {
-      id: 2,
-      name: "Dr. Njeri Ndugu",
-      message: "No class today, Revise the notes.",
-      img: dr_patel,
+
+  const [noteCount, setNoteCount] = useState(0);
+  const [getNotification, setGetNotification] = useState([])
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('/api/users/notification');
+      // const note = setGetNotification(response.data.notifications);
+      console.log(response)
+      const notify = Array.isArray(response.data)
+        ? response.data.map(notification => ({
+          id: notification._id,
+          lecturer: notification.lecturer,
+          venue: notification.venue,
+          unit: notification.unit,
+          saa: notification.saa,
+          detail: notification.detail,
+        }))
+        : [];
+      console.log(notify)
+      return notify;
+    } catch (error) {
+      console.error('Failed to fetch notifications:', error);
     }
-  ]);
-
-  const deleteNotification = (id) => {
-    setNotifications(notifications.filter((notification) => notification.id !== id));
   };
 
-  const markAllAsRead = () => {
-    setNotifications([]);
+  const fetchLecturerCount = async () => {
+    try {
+      const res = await axios.get('/api/users/noteCount');
+      setNoteCount(res.data.noteCount);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+
+  useEffect(() => {
+    const fetchAndSetNotifications = async () => {
+      try {
+        const note = await fetchData();
+        setGetNotification(note);
+      } catch (error) {
+        console.error('Failed to fetch notifications:', error);
+      }
+    };
+
+    fetchAndSetNotifications();
+    fetchLecturerCount();
+  }, []);
+
+
+  function markAllAsRead(): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div className={`absolute top-20 z-50 ${showNotification ? 'block' : 'hidden'}`}>
       <main className="bg-white rounded-lg shadow-lg w-80">
         <div className="flex items-center justify-between px-4 py-2 bg-blue-100 rounded-t-lg">
           <div className="flex justify-center ">
-            <span className="mr-2 text-stone-800 font-semibold">{notifications.length}</span>
+            <span className="mr-2 text-stone-800 font-semibold">{noteCount}</span>
             <h1 className="text-black font-bold">Notifications</h1>
           </div>
           <button onClick={() => setShowNotification(false)}>
@@ -46,34 +75,26 @@ const Notification = () => {
           </button>
         </div>
         <div className="my-1">
-          {notifications.map((notification) => (
-            <div key={notification.id} className="p-1 flex justify-evenly bg-slate-300 rounded my-1 mx-2 hover:mx-0">
+          {getNotification.map(notification => (
+            <div key={notification.id} className="p-1 flex bg-slate-300 rounded my-1 mx-2 hover:mx-0">
               <div className="flex items-center">
-                <Image
-                  src={notification.img}
-                  alt={notification.name}
-                  className="w-8 h-8 rounded-full object-cover"
-                />
                 <div className="ml-2 flex flex-col">
-                  <div className="flex justify-between">
-                    <h1 className="text-sm font-bold text-stone-600">{notification.name}</h1>
-                    <span className="text-stone-500 text-sm font-poppins">2 sec</span>
+                  <div className="flex">
+                    <div className='bg-white mr-1 p-1 rounded-lg h-8 w-8 '><FaUser className="text-black  w-4 h-4 ml-1 " /></div>
+                    <div className='flex flex-col ml-1'><h1 className="text-sm font-bold text-black">{notification.lecturer}</h1>
+                      <div className='flex'><span className="text-sm font-bold text-stone-900">{notification.unit}</span>
+                        <span className="text-stone-700 text-sm ml-2 font-poppins">{notification.venue}</span></div>
+                      <p className="text-stone-800 text-sm font-poppins">{notification.detail} @ {notification.saa}</p>
+                    </div>
                   </div>
-                  <p className="text-stone-500 text-sm font-poppins">{notification.message}</p>
                 </div>
               </div>
-              <button
-                onClick={() => deleteNotification(notification.id)}
-                className="flex justify-center align-center place-items-center"
-              >
-                <RiDeleteBin6Line className="text-red-400" />
-              </button>
             </div>
           ))}
         </div>
-        <div className="py-2 bg-blue-200 rounded-b-lg text-center" onClick={() => markAllAsRead()}>
+        <div className="py-2 bg-blue-200 rounded-b-lg text-center">
           <h1 className="text-sm font-semibold text-gray-600 hover:text-gray-800 cursor-pointer">
-            Mark all as read
+            CTMS
           </h1>
         </div>
       </main>

@@ -155,32 +155,33 @@ function Notifications() {
                         Post
                     </button>
                 </div>
-                <div className='grid grid-cols-2 sm:grid-cols-1'>
-                    {getNotification.map(notification => (
-                        <div key={notification.id} className="p-1 flex justify-evenly bg-slate-300 rounded my-1 mx-2 h-[160px] hover:mx-0">
-                            <div className="flex items-center">
-                                <div className="ml-2 flex flex-col">
-                                    <div className="flex justify-between">
-                                        <h1 className="text-sm font-bold text-stone-600">Lecturer: {notification.lecturer}</h1>
-                                        {/* <span className="text-stone-500 text-sm font-poppins">2 sec</span> */}
+                <div className='mr-3'>
+                    <h1 className='text-black font-bold text-lg mb-5'>Your Notifications</h1>
+                    <div className='grid grid-cols-3'>
+                        {getNotification.map(notification => (
+                            <div key={notification.id} className="p-1 flex-col bg-slate-300 rounded my-1 mx-2">
+                                <div className="flex items-center  p-3">
+                                    <div className="flex flex-col">
+                                        <div className="flex">
+                                            <div className='bg-white mr-1 p-1 rounded-lg h-8 w-8 '><FaUser className="text-black  w-4 h-4 ml-1 " /></div>
+                                            <div className='flex flex-col ml-1'><h1 className="text-sm font-bold text-black">{notification.lecturer}</h1>
+                                                <div className='flex'><span className="text-sm font-bold text-stone-900">{notification.unit}</span>
+                                                <span className="text-stone-700 text-sm ml-2 font-poppins">{notification.venue}</span></div>
+                                                <p className="text-stone-800 text-sm font-poppins">{notification.detail} @ {notification.saa}</p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() => handleDeleteNotification(notification.id)}
+                                            className="flex rounded-lg p-2 justify-center align-center place-items-center w-full bg-red-600 text-white"
+                                        >
+                                            Delete
+                                        </button>
                                     </div>
-                                    <div className="flex justify-between">
-                                        <h1 className="text-sm font-bold text-stone-600">{notification.unit}</h1>
-                                        <span className="text-stone-500 text-sm font-poppins">{notification.venue}</span>
-                                    </div>
-                                    <p className="text-stone-500 text-sm font-poppins">{notification.detail}</p>
 
-                                    <button
-                                        onClick={() => handleDeleteNotification(notification.id)}
-                                        className="flex justify-center align-center place-items-center"
-                                    >
-                                        <RiDeleteBin6Line className="text-red-400" />
-                                    </button>
                                 </div>
-
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
         </main>
