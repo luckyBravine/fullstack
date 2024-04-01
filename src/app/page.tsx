@@ -102,7 +102,7 @@ export default function Home() {
                   </p>
                 </div>
                 <Link
-                  href="/Student"
+                  href="/login"
                   className="w-[90%] rounded-full p-2 flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 text-black hover:bg-blue-600 hover:text-white"
                 >
                   Take A Look <HiOutlineArrowLongRight className="ml-2" />
@@ -123,7 +123,7 @@ export default function Home() {
                   </p>
                 </div>
                 <Link
-                  href="/Admin"
+                  href="/login"
                   className="w-[90%] rounded-full p-2  flex justify-center mx-auto items-center place-items-center my-2 border border-blue-600 hover:bg-blue-600 text-black hover:text-white"
                 >
                   Get Verified <HiOutlineArrowLongRight className="ml-2" />
