@@ -84,6 +84,7 @@ export default function LoginPage() {
         Login here
       </button>
       <Link href="/signup" className="font-semibold">Visit Signup page</Link>
+      <Link href="/" className="font-semibold text-green-500">Home</Link>
     </div>
   );
 }

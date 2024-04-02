@@ -28,6 +28,7 @@ export default function Home() {
   const fetchStudentCount = async () => {
     try {
       const res = await axios.get('/api/users/stdCount');
+      console.log(res)
       setStudentCount(res.data.studentCount);
     } catch (error) {
       console.error(error);

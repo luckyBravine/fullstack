@@ -13,15 +13,16 @@ export function middleware(request: NextRequest) {
 
   console.log('Token:', token);
 
+
+  if(isPublicPath && token) {
+    return NextResponse.redirect(new URL('/login', request.nextUrl))
+  }
   if (hasRedirected) {
     console.log('Already redirected, skipping');
     return NextResponse.next();
   }
-
-  if (!token) {
-    console.log('No token found, redirecting to /home');
-    hasRedirected = true;
-    return NextResponse.redirect(new URL('/', request.nextUrl));
+  if (!isPublicPath && !token) {
+    return NextResponse.redirect(new URL('/', request.nextUrl))
   }
 
   try {
@@ -55,9 +56,9 @@ export function middleware(request: NextRequest) {
     } else {
       console.log('Unknown error:', error);
     }
-    console.log('Redirecting to /login');
+    console.log('Redirecting to /');
     hasRedirected = true;
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
 }
 

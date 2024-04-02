@@ -810,9 +810,6 @@ const Student = () => {
 
   const courseOptions = {
     "BSc IT": Bsc_IT,
-    "BSc SE": Bsc_SE,
-    "BBIT": BBIT,
-    "BSc CS": Bsc_CS
   };
   const yearOptions = ["Y1S2", "Y2S2", "Y3S2", "Y4S2"];
 
